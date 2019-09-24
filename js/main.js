@@ -3,6 +3,12 @@
 var OFFERS_NEARBY_AMOUNT = 8;
 var PIN_WIDTH = 50;
 var PIN_HEIGHT = 70;
+var PRICE_MIN = 1000;
+var PRICE_MAX = 10000;
+var ROOMS_MIN = 1;
+var ROOMS_MAX = 4;
+var GUESTS_MIN = 1;
+var GUESTS_MAX = 10;
 
 var TYPES = ['palace', 'flat', 'house', 'bungalo'];
 var RUSSIAN_WORDS = {flat: 'Квартира', bungalo: 'Бунгало', house: 'Дом', palace: 'Дворец'};
@@ -27,8 +33,8 @@ function createRandomLengthArray(arr) {
   var randomArr = [];
 
   for (var i = 0; i < arr.length; i++) {
-    var pushToArr = Boolean(Math.round(Math.random()));
-    if (pushToArr) {
+    var randomBoolean = Math.random() >= 0.5;
+    if (randomBoolean) {
       randomArr.push(arr[i]);
     }
   }
@@ -47,10 +53,10 @@ function createOffersArray(count) {
       offer: {
         title: 'Title ' + i,
         address: '600, 350',
-        price: 1000 + Math.round(9000 * Math.random()),
+        price: PRICE_MIN + Math.round((PRICE_MAX - PRICE_MIN) * Math.random()),
         type: getRandomElementFromArray(TYPES),
-        rooms: 1 + Math.round(3 * Math.random()),
-        guests: 1 + Math.round(9 * Math.random()),
+        rooms: ROOMS_MIN + Math.round((ROOMS_MAX - ROOMS_MIN) * Math.random()),
+        guests: GUESTS_MIN + Math.round((GUESTS_MAX - GUESTS_MIN) * Math.random()),
         checkin: getRandomElementFromArray(CHECK_TIMES),
         checkout: getRandomElementFromArray(CHECK_TIMES),
         features: createRandomLengthArray(FEATURES),
