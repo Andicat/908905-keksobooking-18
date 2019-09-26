@@ -22,6 +22,7 @@ var mapPins = document.querySelector('.map__pins');
 var map = document.querySelector('.map');
 var mapFilter = document.querySelector('.map__filters-container');
 var mapCardTemplate = document.querySelector('#card').content.querySelector('.map__card');
+var adForm = document.querySelector('.ad-form');
 
 // получаем случайный элемент из массива
 function getRandomElementFromArray(arr) {
@@ -41,7 +42,7 @@ function createRandomLengthArray(arr) {
   return randomArr;
 }
 
-// создаем массив случайных предложений подлизости
+// создаем массив случайных предложений поблизости
 function createOffersArray(count) {
   var offersArray = [];
 
@@ -74,7 +75,7 @@ function createOffersArray(count) {
   return offersArray;
 }
 
-// создаем метку черех шаблон
+// создаем метку через шаблон
 function renderPin(offer) {
   var pinElement = mapPinTemplate.cloneNode(true);
   var pinElementImage = pinElement.querySelector('img');
@@ -139,13 +140,21 @@ function showCard(offer) {
   map.insertBefore(cardElement, mapFilter);
 }
 
-// делаем карту видимой (временно так)
-map.classList.remove('map--faded');
+// делаем элементы формы неактивными
+function disabledForm(form) {
+  var formElements = form.querySelectorAll('fieldset');
+  for (var i = 0; i< formElements.length; i++) {
+    formElements[i].disabled = true;
+  }
+}
+
+disabledForm(adForm);
+//map.classList.remove('map--faded');
 
 // создаем массив соседних предложений
 var offers = createOffersArray(OFFERS_NEARBY_AMOUNT);
 // вставляем на карту метки из массива
-createPins(offers);
+//createPins(offers);
 
 // показываем карточку первого предложения по умолчанию
-showCard(offers[0]);
+//showCard(offers[0]);
