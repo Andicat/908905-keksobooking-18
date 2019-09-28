@@ -12,7 +12,7 @@ var ROOMS_MIN = 1;
 var ROOMS_MAX = 4;
 var GUESTS_MIN = 1;
 var GUESTS_MAX = 10;
-var ESC_KEYCODE = 27;
+// var ESC_KEYCODE = 27;
 var ENTER_KEYCODE = 13;
 var ROOMS_FOR_NOBODY = 100;
 
@@ -210,9 +210,6 @@ window.addEventListener('keydown', function (evt) {
     if (evt.target === mapPinMain) {
       activatePinMain();
     }
-  }
-
-  if (evt.keyCode === ESC_KEYCODE) {
   }
 });
 
