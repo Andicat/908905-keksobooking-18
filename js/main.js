@@ -14,6 +14,7 @@ var GUESTS_MIN = 1;
 var GUESTS_MAX = 10;
 var ESC_KEYCODE = 27;
 var ENTER_KEYCODE = 13;
+var ROOMS_FOR_NOBODY = 100;
 
 var TYPES = ['palace', 'flat', 'house', 'bungalo'];
 var RUSSIAN_WORDS = {flat: 'Квартира', bungalo: 'Бунгало', house: 'Дом', palace: 'Дворец'};
@@ -186,7 +187,7 @@ function checkRoomsCapacity() {
   var roomsCapacity = adForm.rooms.value;
   var capacityOptions = adForm.capacity.options;
   for (var i = 0; i < capacityOptions.length; i++) {
-    if (roomsCapacity < 100) {
+    if (roomsCapacity < ROOMS_FOR_NOBODY) {
       capacityOptions[i].disabled = ((capacityOptions[i].value > 0 & capacityOptions[i].value <= roomsCapacity) ? false : true);
     } else {
       capacityOptions[i].disabled = (capacityOptions[i].value > 0 ? true : false);
@@ -203,15 +204,15 @@ adForm.rooms.addEventListener('change', checkRoomsCapacity);
 
 // обработка нажатия клавиш на клавиатуре
 window.addEventListener('keydown', function (evt) {
+  evt.preventDefault();
+
   if (evt.keyCode === ENTER_KEYCODE) {
-    evt.preventDefault();
     if (evt.target === mapPinMain) {
       activatePinMain();
     }
   }
 
   if (evt.keyCode === ESC_KEYCODE) {
-    evt.preventDefault();
   }
 });
 
