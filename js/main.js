@@ -196,6 +196,7 @@ function setPinMainAddress(pinActive) {
 function activatePinMain() {
   activateMap();
   setPinMainAddress(true);
+  createPins(offers);
 }
 
 // проверка соответствия кол-ва комнат и гостей
@@ -234,21 +235,21 @@ function checkCheckTime(evt) {
 }
 
 // проверка заголовка
-function checkValue(input) {
-  var nameValue = adForm.querySelector('label[for=' + input.name + ']').textContent;
+function checkValue(evt) {
+  var nameValue = adForm.querySelector('label[for=' + evt.target.name + ']').textContent;
 
-  if (input.validity.tooShort) {
-    input.setCustomValidity('Поле "' + nameValue + '" должно состоять как минимум из ' + input.minLength + ' символов');
-  } else if (input.validity.tooLong) {
-    input.setCustomValidity('Поле "' + nameValue + '" не должно превышать ' + input.maxlength + ' символов');
-  } else if (input.validity.rangeOverflow) {
-    input.setCustomValidity('Поле "' + nameValue + '" не может быть больше ' + input.max);
-  } else if (input.validity.rangeUnderflow) {
-    input.setCustomValidity('Поле "' + nameValue + '" не может быть меньше ' + input.min);
-  } else if (input.validity.valueMissing) {
-    input.setCustomValidity('Обязательное поле');
+  if (evt.target.validity.tooShort) {
+    evt.target.setCustomValidity('Поле "' + nameValue + '" должно состоять как минимум из ' + evt.target.minLength + ' символов');
+  } else if (evt.target.validity.tooLong) {
+    evt.target.setCustomValidity('Поле "' + nameValue + '" не должно превышать ' + evt.target.maxlength + ' символов');
+  } else if (evt.target.validity.rangeOverflow) {
+    evt.target.setCustomValidity('Поле "' + nameValue + '" не может быть больше ' + evt.target.max);
+  } else if (evt.target.validity.rangeUnderflow) {
+    evt.target.setCustomValidity('Поле "' + nameValue + '" не может быть меньше ' + evt.target.min);
+  } else if (evt.target.validity.valueMissing) {
+    evt.target.setCustomValidity('Обязательное поле');
   } else {
-    input.setCustomValidity('');
+    evt.target.setCustomValidity('');
   }
 }
 
@@ -265,12 +266,7 @@ adForm.timeout.addEventListener('change', checkCheckTime);
 
 adForm.title.setAttribute('minlength', 30);
 adForm.title.setAttribute('maxlength', 100);
-
-adForm.addEventListener('submit', function () {
-  checkValue(adForm.title);
-  adForm.submit();
-
-});
+adForm.title.addEventListener('invalid', checkValue);
 
 adForm.price.setAttribute('max', 1000000);
 adForm.address.readOnly = true;
@@ -308,9 +304,3 @@ checkMinPrice();
 
 // создаем массив соседних предложений
 var offers = createOffersArray(OFFERS_NEARBY_AMOUNT);
-
-// вставляем на карту метки из массива
-createPins(offers);
-
-// показываем карточку первого предложения по умолчанию
-// showCard(offers[0]);
