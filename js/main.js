@@ -235,21 +235,28 @@ function checkCheckTime(evt) {
 }
 
 // проверка заголовка
-function checkValue(evt) {
-  var nameValue = adForm.querySelector('label[for=' + evt.target.name + ']').textContent;
-
-  if (evt.target.validity.tooShort) {
-    evt.target.setCustomValidity('Поле "' + nameValue + '" должно состоять как минимум из ' + evt.target.minLength + ' символов');
-  } else if (evt.target.validity.tooLong) {
-    evt.target.setCustomValidity('Поле "' + nameValue + '" не должно превышать ' + evt.target.maxlength + ' символов');
-  } else if (evt.target.validity.rangeOverflow) {
-    evt.target.setCustomValidity('Поле "' + nameValue + '" не может быть больше ' + evt.target.max);
-  } else if (evt.target.validity.rangeUnderflow) {
-    evt.target.setCustomValidity('Поле "' + nameValue + '" не может быть меньше ' + evt.target.min);
-  } else if (evt.target.validity.valueMissing) {
-    evt.target.setCustomValidity('Обязательное поле');
+function checkTitle() {
+  if (adForm.title.validity.tooShort) {
+    adForm.title.setCustomValidity('Заголовок объявления должен состоять как минимум из 30 символов');
+  } else if (adForm.title.validity.tooLong) {
+    adForm.title.setCustomValidity('Заголовок объявления не должен превышать 100 символов');
+  } else if (adForm.title.validity.valueMissing) {
+    adForm.title.setCustomValidity('Заголовок объявления не может быть пустым');
   } else {
-    evt.target.setCustomValidity('');
+    adForm.title.setCustomValidity('');
+  }
+}
+
+// проверка цены
+function checkPrice() {
+  if (adForm.price.validity.rangeOverflow) {
+    adForm.price.setCustomValidity('Цена за ночь не может быть больше ' + adForm.price.max);
+  } else if (adForm.price.validity.rangeUnderflow) {
+    adForm.price.setCustomValidity('Цена за ночь не может быть меньше ' + adForm.price.min);
+  } else if (adForm.price.validity.valueMissing) {
+    adForm.price.setCustomValidity('Цена за ночь не может быть пустой');
+  } else {
+    adForm.price.setCustomValidity('');
   }
 }
 
@@ -267,11 +274,11 @@ adForm.timeout.addEventListener('change', checkCheckTime);
 adForm.title.setAttribute('minlength', 30);
 adForm.title.setAttribute('maxlength', 100);
 adForm.title.required = true;
-adForm.title.addEventListener('invalid', checkValue);
+adForm.title.addEventListener('invalid', checkTitle);
 
 adForm.price.setAttribute('max', 1000000);
 adForm.price.required = true;
-adForm.price.addEventListener('invalid', checkValue);
+adForm.price.addEventListener('invalid', checkPrice);
 
 adForm.address.readOnly = true;
 
