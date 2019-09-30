@@ -269,6 +269,8 @@ adForm.title.setAttribute('maxlength', 100);
 adForm.title.addEventListener('invalid', checkValue);
 
 adForm.price.setAttribute('max', 1000000);
+adForm.price.addEventListener('invalid', checkValue);
+
 adForm.address.readOnly = true;
 
 // обработка нажатия клавиш на клавиатуре
