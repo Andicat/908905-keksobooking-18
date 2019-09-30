@@ -266,9 +266,11 @@ adForm.timeout.addEventListener('change', checkCheckTime);
 
 adForm.title.setAttribute('minlength', 30);
 adForm.title.setAttribute('maxlength', 100);
+adForm.title.required = true;
 adForm.title.addEventListener('invalid', checkValue);
 
 adForm.price.setAttribute('max', 1000000);
+adForm.price.required = true;
 adForm.price.addEventListener('invalid', checkValue);
 
 adForm.address.readOnly = true;
