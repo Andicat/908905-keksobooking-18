@@ -6,19 +6,17 @@ var PIN_HEIGHT = 70;
 var PIN_MAIN_WIDTH = 65;
 var PIN_MAIN_HEIGHT = 65;
 var PIN_MAIN_ACTIVE_HEIGHT = 87;
+var ESC_KEYCODE = 27;
+var ENTER_KEYCODE = 13;
 var PRICE_MIN = 1000;
 var PRICE_MAX = 10000;
 var ROOMS_MIN = 1;
 var ROOMS_MAX = 4;
 var GUESTS_MIN = 1;
 var GUESTS_MAX = 10;
-var ESC_KEYCODE = 27;
-var ENTER_KEYCODE = 13;
-var ROOMS_FOR_NOBODY = 100;
 
 var TYPES = ['palace', 'flat', 'house', 'bungalo'];
 var RUSSIAN_WORDS = {flat: 'Квартира', bungalo: 'Бунгало', house: 'Дом', palace: 'Дворец'};
-var MIN_PRICES = {flat: 1000, bungalo: 0, house: 5000, palace: 10000};
 
 var CHECK_TIMES = ['12:00', '13:00', '14:00'];
 var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
@@ -30,27 +28,8 @@ var mapPins = document.querySelector('.map__pins');
 var map = document.querySelector('.map');
 var mapFilter = document.querySelector('.map__filters-container');
 var mapCardTemplate = document.querySelector('#card').content.querySelector('.map__card');
-var adForm = document.querySelector('.ad-form');
 var filterForm = document.querySelector('.map__filters');
 var cardCurrentElement;
-
-// получаем случайный элемент из массива
-function getRandomElementFromArray(arr) {
-  return arr[Math.round((arr.length - 1) * Math.random())];
-}
-
-// получаем массив случайной длины
-function createRandomLengthArray(arr) {
-  var randomArr = [];
-
-  for (var i = 0; i < arr.length; i++) {
-    var randomBoolean = Math.random() >= 0.5;
-    if (randomBoolean) {
-      randomArr.push(arr[i]);
-    }
-  }
-  return randomArr;
-}
 
 // создаем массив случайных предложений поблизости
 function createOffersArray(count) {
@@ -65,14 +44,14 @@ function createOffersArray(count) {
         title: 'Title ' + i,
         address: '600, 350',
         price: PRICE_MIN + Math.round((PRICE_MAX - PRICE_MIN) * Math.random()),
-        type: getRandomElementFromArray(TYPES),
+        type: window.util.getRandomElementFromArray(TYPES),
         rooms: ROOMS_MIN + Math.round((ROOMS_MAX - ROOMS_MIN) * Math.random()),
         guests: GUESTS_MIN + Math.round((GUESTS_MAX - GUESTS_MIN) * Math.random()),
-        checkin: getRandomElementFromArray(CHECK_TIMES),
-        checkout: getRandomElementFromArray(CHECK_TIMES),
-        features: createRandomLengthArray(FEATURES),
+        checkin: window.util.getRandomElementFromArray(CHECK_TIMES),
+        checkout: window.util.getRandomElementFromArray(CHECK_TIMES),
+        features: window.util.createRandomLengthArray(FEATURES),
         description: 'Description',
-        photos: createRandomLengthArray(PHOTOS)
+        photos: window.util.createRandomLengthArray(PHOTOS)
       },
       location: {
         x: Math.round(mapPins.offsetWidth * Math.random()),
@@ -162,26 +141,11 @@ function closeCard() {
   map.removeChild(cardCurrentElement);
 }
 
-// делаем элементы формы неактивными
-function disabledForm(form, disabled) {
-  var formElements = form.elements;
-
-  if (disabled) {
-    form.classList.add('ad-form--disabled');
-  } else {
-    form.classList.remove('ad-form--disabled');
-  }
-
-  for (var i = 0; i < formElements.length; i++) {
-    formElements[i].disabled = disabled;
-  }
-}
-
 // активируем карту и форму
 function activateMap() {
   map.classList.remove('map--faded');
-  disabledForm(adForm, false);
-  disabledForm(filterForm, false);
+  window.adform.disabledForm(false);
+  window.util.disabledForm(filterForm, false, 'ad-form--disabled');
 }
 
 // устанавливаем значение поля адреса
@@ -189,7 +153,7 @@ function setPinMainAddress(pinActive) {
   var x = mapPinMain.offsetLeft + PIN_MAIN_WIDTH / 2;
   var y = mapPinMain.offsetTop + (pinActive ? PIN_MAIN_ACTIVE_HEIGHT : PIN_MAIN_HEIGHT / 2);
 
-  adForm.address.value = Math.round(x) + ', ' + Math.round(y);
+  window.adform.form.address.value = Math.round(x) + ', ' + Math.round(y);
 }
 
 // активируем главную метку
@@ -199,88 +163,9 @@ function activatePinMain() {
   createPins(offers);
 }
 
-// проверка соответствия кол-ва комнат и гостей
-function checkRoomsCapacity() {
-  var roomsCapacity = adForm.rooms.value;
-  var capacityOptions = adForm.capacity.options;
-
-  for (var i = 0; i < capacityOptions.length; i++) {
-    if (roomsCapacity < ROOMS_FOR_NOBODY) {
-      capacityOptions[i].disabled = ((capacityOptions[i].value > 0 & capacityOptions[i].value <= roomsCapacity) ? false : true);
-    } else {
-      capacityOptions[i].disabled = (capacityOptions[i].value > 0 ? true : false);
-    }
-  }
-
-  if (capacityOptions[capacityOptions.selectedIndex].disabled) {
-    capacityOptions[capacityOptions.selectedIndex].selected = false;
-  }
-}
-
-// проверка минимальной цены
-function checkMinPrice() {
-  var minPrice = MIN_PRICES[adForm.type.value];
-
-  adForm.price.setAttribute('min', minPrice);
-  adForm.price.setAttribute('placeholder', minPrice);
-}
-
-// проверка времены заезда/выезда
-function checkCheckTime(evt) {
-  if (evt.target.name === 'timein') {
-    adForm.timeout.value = evt.target.value;
-  } else {
-    adForm.timein.value = evt.target.value;
-  }
-}
-
-// проверка заголовка
-function checkTitle() {
-  if (adForm.title.validity.tooShort) {
-    adForm.title.setCustomValidity('Заголовок объявления должен состоять как минимум из 30 символов');
-  } else if (adForm.title.validity.tooLong) {
-    adForm.title.setCustomValidity('Заголовок объявления не должен превышать 100 символов');
-  } else if (adForm.title.validity.valueMissing) {
-    adForm.title.setCustomValidity('Заголовок объявления не может быть пустым');
-  } else {
-    adForm.title.setCustomValidity('');
-  }
-}
-
-// проверка цены
-function checkPrice() {
-  if (adForm.price.validity.rangeOverflow) {
-    adForm.price.setCustomValidity('Цена за ночь не может быть больше ' + adForm.price.max);
-  } else if (adForm.price.validity.rangeUnderflow) {
-    adForm.price.setCustomValidity('Цена за ночь не может быть меньше ' + adForm.price.min);
-  } else if (adForm.price.validity.valueMissing) {
-    adForm.price.setCustomValidity('Цена за ночь не может быть пустой');
-  } else {
-    adForm.price.setCustomValidity('');
-  }
-}
 
 // клик мышкой на главную метку
 mapPinMain.addEventListener('mousedown', activatePinMain);
-
-adForm.action = 'https://js.dump.academy/keksobooking';
-adForm.method = 'POST';
-adForm.enctype = 'multipart/form-data';
-adForm.rooms.addEventListener('change', checkRoomsCapacity);
-adForm.type.addEventListener('change', checkMinPrice);
-adForm.timein.addEventListener('change', checkCheckTime);
-adForm.timeout.addEventListener('change', checkCheckTime);
-
-adForm.title.setAttribute('minlength', 30);
-adForm.title.setAttribute('maxlength', 100);
-adForm.title.required = true;
-adForm.title.addEventListener('invalid', checkTitle);
-
-adForm.price.setAttribute('max', 1000000);
-adForm.price.required = true;
-adForm.price.addEventListener('invalid', checkPrice);
-
-adForm.address.readOnly = true;
 
 // обработка нажатия клавиш на клавиатуре
 window.addEventListener('keydown', function (evt) {
@@ -305,13 +190,12 @@ window.addEventListener('keydown', function (evt) {
   }
 });
 
-disabledForm(adForm, true);
-disabledForm(filterForm, true);
+window.adform.disabledForm(true);
+window.util.disabledForm(filterForm, true, 'ad-form--disabled');
 
 // подставляются координаты центра метки
 setPinMainAddress(false);
-checkRoomsCapacity();
-checkMinPrice();
+
 
 // создаем массив соседних предложений
 var offers = createOffersArray(OFFERS_NEARBY_AMOUNT);
