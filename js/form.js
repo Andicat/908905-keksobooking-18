@@ -70,9 +70,9 @@
     }
   }
 
-  function disabledForm(disabled) {
-    window.util.disabledForm(form, disabled, 'ad-form--disabled');
-    if (!disabled) {
+  function disableForm(isDisabled) {
+    window.util.disableForm(form, isDisabled, 'ad-form--disabled');
+    if (!isDisabled) {
       checkRoomsCapacity();
       checkMinPrice();
     }
@@ -98,8 +98,8 @@
   form.address.readOnly = true;
 
   // экспорт
-  window.adform = {
+  window.form = {
     form: form,
-    disabledForm: disabledForm
+    disableForm: disableForm
   };
 })();

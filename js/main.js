@@ -15,8 +15,8 @@
   // активируем карту и форму
   function activateMap() {
     map.classList.remove('map--faded');
-    window.adform.disabledForm(false);
-    window.util.disabledForm(filterForm, false, 'ad-form--disabled');
+    window.form.disableForm(false);
+    window.util.disableForm(filterForm, false, 'ad-form--disabled');
   }
 
   // устанавливаем значение поля адреса
@@ -24,7 +24,7 @@
     var x = mapPinMain.offsetLeft + PIN_MAIN_WIDTH / 2;
     var y = mapPinMain.offsetTop + (pinActive ? PIN_MAIN_ACTIVE_HEIGHT : PIN_MAIN_HEIGHT / 2);
 
-    window.adform.form.address.value = Math.round(x) + ', ' + Math.round(y);
+    window.form.form.address.value = Math.round(x) + ', ' + Math.round(y);
   }
 
   // активируем главную метку
@@ -60,8 +60,8 @@
   });
 
   // по умолчанию формы не активные
-  window.adform.disabledForm(true);
-  window.util.disabledForm(filterForm, true, 'ad-form--disabled');
+  window.form.disableForm(true);
+  window.util.disableForm(filterForm, true, 'ad-form--disabled');
 
   // подставляются координаты центра метки
   setPinMainAddress(false);
