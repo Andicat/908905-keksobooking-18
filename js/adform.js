@@ -34,10 +34,13 @@
 
   // проверка времены заезда/выезда
   function checkCheckTime(evt) {
-    if (evt.target.name === 'timein') {
-      form.timeout.value = evt.target.value;
-    } else {
-      form.timein.value = evt.target.value;
+    switch (evt.target.name) {
+      case 'timein':
+        form.timeout.value = evt.target.value;
+        break;
+      case 'timeout':
+        form.timein.value = evt.target.value;
+        break;
     }
   }
 
@@ -67,6 +70,14 @@
     }
   }
 
+  function disabledForm(disabled) {
+    window.util.disabledForm(form, disabled, 'ad-form--disabled');
+    if (!disabled) {
+      checkRoomsCapacity();
+      checkMinPrice();
+    }
+  }
+
   form.action = 'https://js.dump.academy/keksobooking';
   form.method = 'POST';
   form.enctype = 'multipart/form-data';
@@ -86,14 +97,9 @@
 
   form.address.readOnly = true;
 
+  // экспорт
   window.adform = {
     form: form,
-    disabledForm: function (disabled) {
-      window.util.disabledForm(form, disabled, 'ad-form--disabled');
-      if (!disabled) {
-        checkRoomsCapacity();
-        checkMinPrice();
-      }
-    }
+    disabledForm: disabledForm
   };
 })();
