@@ -1,13 +1,9 @@
 'use strict';
 
 (function () {
-  var PIN_MAIN_WIDTH = 65;
-  var PIN_MAIN_HEIGHT = 65;
-  var PIN_MAIN_ACTIVE_HEIGHT = 87;
   var ESC_KEYCODE = 27;
   var ENTER_KEYCODE = 13;
 
-  var mapPinMain = document.querySelector('.map__pin--main');
   var map = document.querySelector('.map');
   var mapFilter = document.querySelector('.map__filters-container');
   var filterForm = document.querySelector('.map__filters');
@@ -18,23 +14,6 @@
     window.form.disableForm(false);
     window.util.disableForm(filterForm, false, 'ad-form--disabled');
   }
-
-  // устанавливаем значение поля адреса
-  function setPinMainAddress(pinActive) {
-    var x = mapPinMain.offsetLeft + PIN_MAIN_WIDTH / 2;
-    var y = mapPinMain.offsetTop + (pinActive ? PIN_MAIN_ACTIVE_HEIGHT : PIN_MAIN_HEIGHT / 2);
-
-    window.form.form.address.value = Math.round(x) + ', ' + Math.round(y);
-  }
-
-  // активируем главную метку
-  function activatePinMain() {
-    activateMap();
-    setPinMainAddress(true);
-    window.pins.createPins();
-  }
-
-  mapPinMain.addEventListener('mousedown', activatePinMain);
 
   // обработка нажатия клавиш на клавиатуре
   window.addEventListener('keydown', function (evt) {
@@ -60,15 +39,16 @@
   });
 
   // по умолчанию формы не активные
-  window.form.disableForm(true);
   window.util.disableForm(filterForm, true, 'ad-form--disabled');
-
-  // подставляются координаты центра метки
-  setPinMainAddress(false);
-
+  window.form.disableForm(true);
+ 
+ // подставляются координаты центра метки
+  window.pinmain.setPinMainAddress(false);  
+  
   // экспорт
   window.main = {
     map: map,
-    mapFilter: mapFilter
+    mapFilter: mapFilter,
+    activateMap: activateMap
   };
 })();

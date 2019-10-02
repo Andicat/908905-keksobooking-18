@@ -18,6 +18,8 @@
 
   var mapPinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
   var mapPins = document.querySelector('.map__pins');
+  var offers;
+
 
   // создаем массив случайных предложений поблизости
   function createOffersArray(count) {
@@ -71,7 +73,15 @@
 
   // вставляем метки на карту
   function createPins() {
+    var currentPins = mapPins.querySelectorAll('.map__pin');
+    for (var i = 0; i < currentPins.length; i++) {
+      if (!currentPins[i].classList.contains('map__pin--main')) {
+        mapPins.removeChild(currentPins[i]);  
+      }
+    }
     var fragment = document.createDocumentFragment();
+    
+    offers = createOffersArray(OFFERS_NEARBY_AMOUNT);
 
     for (var i = 0; i < offers.length; i++) {
       fragment.appendChild(renderPin(offers[i], i));
@@ -80,7 +90,6 @@
     mapPins.appendChild(fragment);
   }
 
-  var offers = createOffersArray(OFFERS_NEARBY_AMOUNT);
 
   // экспорт
   window.pins = {
