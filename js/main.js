@@ -20,11 +20,8 @@
 
     if (evt.keyCode === ENTER_KEYCODE) {
 
-      if (evt.target === mapPinMain) {
-        activatePinMain();
-      }
-      if (evt.target === mapPinMain) {
-        activatePinMain();
+      if (evt.target === window.pinmain.mapPinMain) {
+        window.pinmain.activatePinMain();
       }
       if (evt.target.classList.contains('map__pin')) {
         window.card.showCard(window.pins.offers[evt.target.getAttribute('data-index')]);
@@ -41,10 +38,10 @@
   // по умолчанию формы не активные
   window.util.disableForm(filterForm, true, 'ad-form--disabled');
   window.form.disableForm(true);
- 
- // подставляются координаты центра метки
-  window.pinmain.setPinMainAddress(false);  
-  
+
+  // подставляются координаты центра метки
+  window.pinmain.setPinMainAddress(false);
+
   // экспорт
   window.main = {
     map: map,
