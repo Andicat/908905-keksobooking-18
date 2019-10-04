@@ -28,10 +28,54 @@
 
   // перетаскивание метки
   mapPinMain.addEventListener('mousedown', function (evt) {
-    evt.preventDefault();
+   isDrag = true;
+  })
 
-    var startCoords = {
-      x: evt.clientX,
+  mapPinMain.addEventListener('mouseup', function (evt) {
+   isDrag = false;
+  })
+
+  mapPinMain.addEventListener('mousemove', function (evt) {
+   if (isDrag) {
+    move(evt);
+   }
+  })
+
+//* вычисление координат
+function move(e) {
+  var newLocation = {
+    x: limits.left,
+    y: limits.top
+  };
+  if (e.pageX > limits.right) {
+    newLocation.x = limits.right;
+  } else if (e.pageX > limits.left) {
+    newLocation.x = e.pageX;
+  }
+  if (e.pageY > limits.bottom) {
+    newLocation.y = limits.bottom;
+  } else if (e.pageY > limits.top) {
+    newLocation.y = e.pageY;
+  }
+  relocate(newLocation);
+}
+
+//* размещение small
+function relocate(newLocation) {
+  mapPinMain.style.top.left = newLocation.x + 'px';
+  mapPinMain.style.top.top = newLocation.y + 'px';
+}
+
+
+
+
+
+
+  //mapPinMain.addEventListener('mousedown', function (evt) {
+   // evt.preventDefault();
+
+  //  var startCoords = {
+  /*    x: evt.clientX,
       y: evt.clientY
     };
     
@@ -46,17 +90,6 @@
         y: startCoords.y - moveEvt.clientY
       };
 
-      if (shift.x > limits.right) {
-      	shift.x = limits.right;
-      } else if (shift.x > limits.left) {
-      	shift.x = shift.x;
-      }
-      if (shift.y > limits.bottom) {
-      	shift.y = limits.bottom;
-      } else if (shift.y > limits.top) {
-      	shift.y = shift.y;
-      }
-     
       startCoords = {
         x: moveEvt.clientX,
         y: moveEvt.clientY
@@ -64,7 +97,6 @@
 
       mapPinMain.style.top = (mapPinMain.offsetTop - shift.y) + 'px';
       mapPinMain.style.left = (mapPinMain.offsetLeft - shift.x) + 'px';
-
     };
 
     var onMouseUp = function (upEvt) {
@@ -89,7 +121,7 @@
 
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
-  });
+  });*/
 
  // экспорт
   window.pinmain = {
