@@ -31,7 +31,6 @@
     window.pins.createPins();
   }
 
- 
   mapPinMain.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
 
@@ -49,6 +48,11 @@
       var shift = {
         x: startCoords.x - moveEvt.clientX,
         y: startCoords.y - moveEvt.clientY
+      };
+
+      startCoords = {
+        x: moveEvt.clientX,
+        y: moveEvt.clientY
       };
 
       mapPinMain.style.top = Math.min(Math.max((mapPinMain.offsetTop - shift.y), limits.top), limits.bottom - PIN_MAIN_HEIGHT) + 'px';
