@@ -24,6 +24,19 @@
   // создаем массив случайных предложений поблизости
   function createOffersArray(count) {
     var offersArray = [];
+    var startX = window.pinmain.mapPinMain.offsetLeft - mapPins.offsetWidth / 4;
+    var startY = window.pinmain.mapPinMain.offsetTop - mapPins.offsetHeight / 4;
+
+    if (startX < 0) {
+      startX = 0;
+    } else if (startX > (mapPins.offsetWidth / 2)) {
+      startX = mapPins.offsetWidth / 2;
+    }
+    if (startY < 0) {
+      startY = Math.max(PIN_HEIGHT, 0);
+    } else if (startY > (mapPins.offsetHeight / 2)) {
+      startY = mapPins.offsetHeight / 2;
+    }
 
     for (var i = 1; i < count; i++) {
       var randomOffer = {
@@ -44,8 +57,8 @@
           photos: window.util.createRandomLengthArray(PHOTOS)
         },
         location: {
-          x: Math.round(mapPins.offsetWidth * Math.random()),
-          y: 130 + Math.round(500 * Math.random())
+          x: startX + Math.round(mapPins.offsetWidth / 2 * Math.random()),
+          y: startY + Math.round(mapPins.offsetHeight / 2 * Math.random())
         }
       };
 
@@ -76,14 +89,14 @@
     var currentPins = mapPins.querySelectorAll('.map__pin');
     for (var i = 0; i < currentPins.length; i++) {
       if (!currentPins[i].classList.contains('map__pin--main')) {
-        mapPins.removeChild(currentPins[i]);  
+        mapPins.removeChild(currentPins[i]);
       }
     }
     var fragment = document.createDocumentFragment();
-    
+
     offers = createOffersArray(OFFERS_NEARBY_AMOUNT);
 
-    for (var i = 0; i < offers.length; i++) {
+    for (i = 0; i < offers.length; i++) {
       fragment.appendChild(renderPin(offers[i], i));
     }
 
