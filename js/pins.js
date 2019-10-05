@@ -42,7 +42,7 @@
           photos: window.util.createRandomLengthArray(PHOTOS)
         },
         location: {
-          x: Math.round(mapPins.offsetWidth * Math.random()),
+          x: mapPins.offsetLeft + Math.round(mapPins.offsetWidth * Math.random()),
           y: 130 + Math.round(500 * Math.random())
         }
       };
@@ -69,6 +69,8 @@
     return pinElement;
   }
 
+  var offers = createOffersArray(OFFERS_NEARBY_AMOUNT);
+
   // вставляем метки на карту
   function createPins() {
     var fragment = document.createDocumentFragment();
@@ -79,8 +81,6 @@
 
     mapPins.appendChild(fragment);
   }
-
-  var offers = createOffersArray(OFFERS_NEARBY_AMOUNT);
 
   // экспорт
   window.pins = {
