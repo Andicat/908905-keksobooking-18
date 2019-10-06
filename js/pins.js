@@ -1,9 +1,9 @@
 'use strict';
 
 (function () {
-  var OFFERS_NEARBY_AMOUNT = 8;
   var PIN_WIDTH = 50;
   var PIN_HEIGHT = 70;
+  /* var OFFERS_NEARBY_AMOUNT = 8;
   var PRICE_MIN = 1000;
   var PRICE_MAX = 10000;
   var ROOMS_MIN = 1;
@@ -15,12 +15,14 @@
   var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
   var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
   var TYPES = ['palace', 'flat', 'house', 'bungalo'];
+  */
 
   var mapPinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
   var mapPins = document.querySelector('.map__pins');
+  var offers;
 
   // создаем массив случайных предложений поблизости
-  function createOffersArray(count) {
+  /* function createOffersArray(count) {
     var offersArray = [];
 
     for (var i = 1; i < count; i++) {
@@ -50,7 +52,7 @@
       offersArray.push(randomOffer);
     }
     return offersArray;
-  }
+  }*/
 
   // создаем метку через шаблон
   function renderPin(offer, index) {
@@ -69,17 +71,17 @@
     return pinElement;
   }
 
-  var offers = createOffersArray(OFFERS_NEARBY_AMOUNT);
-
   // вставляем метки на карту
   function createPins() {
-    var fragment = document.createDocumentFragment();
+    window.backend.load(function (data) {
+      offers = data;
+      var fragment = document.createDocumentFragment();
 
-    for (var i = 0; i < offers.length; i++) {
-      fragment.appendChild(renderPin(offers[i], i));
-    }
-
-    mapPins.appendChild(fragment);
+      for (var i = 0; i < offers.length; i++) {
+        fragment.appendChild(renderPin(offers[i], i));
+      }
+      mapPins.appendChild(fragment);
+    });
   }
 
   // экспорт
