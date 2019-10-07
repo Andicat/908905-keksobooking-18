@@ -78,9 +78,6 @@
     }
   }
 
-  form.action = 'https://js.dump.academy/keksobooking';
-  form.method = 'POST';
-  form.enctype = 'multipart/form-data';
   form.rooms.addEventListener('change', checkRoomsCapacity);
   form.type.addEventListener('change', checkMinPrice);
   form.timein.addEventListener('change', checkCheckTime);

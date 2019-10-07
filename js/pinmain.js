@@ -80,7 +80,7 @@
   });
 
   // экспорт
-  window.pinmain = {
+  window.pinMain = {
     mapPinMain: mapPinMain,
     setPinMainAddress: setPinMainAddress,
     activatePinMain: activatePinMain

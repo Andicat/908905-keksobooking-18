@@ -20,8 +20,8 @@
 
     if (evt.keyCode === ENTER_KEYCODE) {
 
-      if (evt.target === window.pinmain.mapPinMain) {
-        window.pinmain.activatePinMain();
+      if (evt.target === window.pinMain.mapPinMain) {
+        window.pinMain.activatePinMain();
       }
       if (evt.target.classList.contains('map__pin')) {
         window.card.showCard(window.pins.offers[evt.target.getAttribute('data-index')]);
@@ -40,7 +40,7 @@
   window.form.disableForm(true);
 
   // подставляются координаты центра метки
-  window.pinmain.setPinMainAddress(false);
+  window.pinMain.setPinMainAddress(false);
 
   // экспорт
   window.main = {
