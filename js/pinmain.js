@@ -7,6 +7,8 @@
 
   var mapPinMain = document.querySelector('.map__pin--main');
   var mapPins = document.querySelector('.map__pins');
+  var mapPinMainX = mapPinMain.offsetLeft;
+  var mapPinMainY = mapPinMain.offsetTop;
 
   var limits = {
     top: mapPins.offsetTop + PIN_MAIN_ACTIVE_HEIGHT,
@@ -83,6 +85,8 @@
   window.pinMain = {
     mapPinMain: mapPinMain,
     setPinMainAddress: setPinMainAddress,
-    activatePinMain: activatePinMain
+    activatePinMain: activatePinMain,
+    mapPinMainX: mapPinMainX,
+    mapPinMainY: mapPinMainY
   };
 })();

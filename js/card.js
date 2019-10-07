@@ -55,7 +55,9 @@
 
   // удаляем карточку предложения с карты
   function closeCard() {
-    window.main.map.removeChild(cardCurrentElement);
+    if (cardCurrentElement) {
+      window.main.map.removeChild(cardCurrentElement);
+    }
   }
 
   // экспорт
