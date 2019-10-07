@@ -78,6 +78,43 @@
     }
   }
 
+  function resetForm() {
+    var formElements = form.elements;
+    for (var i = 0; i < formElements.length; i++) {
+      var fieldType = formElements[i].type.toLowerCase();
+      switch (fieldType) {
+        case 'text':
+        case 'textarea':
+          formElements[i].value = '';
+          break;
+        case 'number':
+          formElements[i].value = '';
+          break;
+        case 'checkbox':
+          formElements[i].checked = false;
+          break;
+        case 'select-one':
+          formElements[i].selectedIndex = (formElements[i].name === 'type') ? 1 : 0;
+          break;
+        default:
+          break;
+      }
+    }
+    checkRoomsCapacity();
+    checkMinPrice();
+    var pins = document.querySelectorAll('.map__pin');
+    for (i = 0; i < pins.length; i++) {
+      if (!pins[i].classList.contains('map__pin--main')) {
+        pins[i].remove();
+      } else {
+        pins[i].style.left = window.pinMain.mapPinMainX + 'px';
+        pins[i].style.top = window.pinMain.mapPinMainY + 'px';
+        window.pinMain.setPinMainAddress(true);
+      }
+    }
+    window.card.closeCard();
+  }
+
   form.rooms.addEventListener('change', checkRoomsCapacity);
   form.type.addEventListener('change', checkMinPrice);
   form.timein.addEventListener('change', checkCheckTime);
@@ -93,6 +130,14 @@
   form.price.addEventListener('invalid', checkPrice);
 
   form.address.readOnly = true;
+
+  form.addEventListener('submit', function (evt) {
+    window.backend.save(new FormData(form), function () {
+      resetForm();
+      window.backend.showSuccess();
+    }, window.backend.showError);
+    evt.preventDefault();
+  });
 
   // экспорт
   window.form = {

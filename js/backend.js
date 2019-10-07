@@ -37,29 +37,47 @@
   }
 
   // отправка данных на сервер
-  /* function save(data, onLoad, onError) {
+  function save(data, onLoad, onError) {
     var xhr = setup(onLoad, onError);
     xhr.open('POST', URL);
     xhr.send(data);
-  }*/
+  }
 
-  // показ ошибки
+  // ошибка :(
   function showError() {
     var errorTemplate = document.querySelector('#error').content.querySelector('.error');
     var errorMessage = errorTemplate.cloneNode(true);
     var errorText = errorMessage.querySelector('.error__message');
     var errorCloseButton = errorMessage.querySelector('.error__button');
 
-    errorText.textContent = 'Произошла ошибка при загрузке';
+    errorText.textContent = 'Произошла ошибка';
     document.querySelector('main').appendChild(errorMessage);
     errorCloseButton.addEventListener('click', function () {
       document.querySelector('main').removeChild(errorMessage);
+    });
+    errorMessage.addEventListener('click', function () {
+      document.querySelector('main').removeChild(errorMessage);
+    });
+  }
+
+  // успешная отправка
+  function showSuccess() {
+    var successTemplate = document.querySelector('#success').content.querySelector('.success');
+    var successMessage = successTemplate.cloneNode(true);
+    var successText = successMessage.querySelector('.success__message');
+
+    successText.textContent = 'Данные успешно отправлены';
+    document.querySelector('main').appendChild(successMessage);
+    successMessage.addEventListener('click', function () {
+      document.querySelector('main').removeChild(successMessage);
     });
   }
 
   // экспорт
   window.backend = {
     load: load,
-    showError: showError
+    save: save,
+    showError: showError,
+    showSuccess: showSuccess
   };
 })();

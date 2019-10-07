@@ -32,6 +32,12 @@
     }
     if (evt.keyCode === ESC_KEYCODE) {
       window.card.closeCard();
+      if (document.querySelector('.success')) {
+        document.querySelector('.success').remove();
+      }
+      if (document.querySelector('.error')) {
+        document.querySelector('.error').remove();
+      }
     }
   });
 
