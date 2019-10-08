@@ -28,9 +28,8 @@
   function activatePinMain() {
     if (window.main.map.classList.contains('map--faded')) {
       window.main.activateMap();
+      window.pins.createPins();
     }
-    setPinMainAddress(true);
-    window.pins.createPins();
   }
 
   mapPinMain.addEventListener('mousedown', function (evt) {
@@ -59,6 +58,8 @@
 
       mapPinMain.style.top = Math.min(Math.max((mapPinMain.offsetTop - shift.y), limits.top), limits.bottom - PIN_MAIN_HEIGHT) + 'px';
       mapPinMain.style.left = Math.min(Math.max((mapPinMain.offsetLeft - shift.x), limits.left), limits.right - PIN_MAIN_WIDTH) + 'px';
+
+      setPinMainAddress(true);
     };
 
     var onMouseUp = function (upEvt) {
@@ -74,11 +75,12 @@
         };
         mapPinMain.addEventListener('click', onClickPreventDefault);
       }
-      activatePinMain();
     };
 
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
+
+    activatePinMain();
   });
 
   // экспорт
