@@ -112,6 +112,7 @@
         window.pinMain.setPinMainAddress(true);
       }
     }
+    window.main.map.classList.add('map--faded');
     window.card.closeCard();
   }
 
