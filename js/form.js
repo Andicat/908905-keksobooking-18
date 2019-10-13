@@ -24,6 +24,13 @@
     }
   }
 
+  // смена типа жилья
+  function onChangeType() {
+    window.card.closeCard();
+    window.pins.createPins();
+    checkMinPrice();
+  }
+
   // проверка минимальной цены
   function checkMinPrice() {
     var minPrice = MIN_PRICES[form.type.value];
@@ -117,7 +124,7 @@
   }
 
   form.rooms.addEventListener('change', checkRoomsCapacity);
-  form.type.addEventListener('change', checkMinPrice);
+  form.type.addEventListener('change', onChangeType);
   form.timein.addEventListener('change', checkCheckTime);
   form.timeout.addEventListener('change', checkCheckTime);
 
