@@ -6,13 +6,12 @@
 
   var map = document.querySelector('.map');
   var mapFilter = document.querySelector('.map__filters-container');
-  var filterForm = document.querySelector('.map__filters');
 
   // активируем карту и форму
   function activateMap() {
     map.classList.remove('map--faded');
     window.form.disableForm(false);
-    window.util.disableForm(filterForm, false, 'ad-form--disabled');
+    window.util.disableForm(window.filter.form, false, 'ad-form--disabled');
   }
 
   // обработка нажатия клавиш на клавиатуре
@@ -43,7 +42,7 @@
   });
 
   // по умолчанию формы не активные
-  window.util.disableForm(filterForm, true, 'ad-form--disabled');
+  window.util.disableForm(window.filter.form, true, 'ad-form--disabled');
   window.form.disableForm(true);
 
   // подставляются координаты центра метки
