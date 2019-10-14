@@ -28,7 +28,7 @@
   function activatePinMain() {
     if (window.main.map.classList.contains('map--faded')) {
       window.main.activateMap();
-      window.pins.createPins(window.offers.sortOffers(window.filter.form['housing-type'].value));
+      window.pins.createPins(window.offers.sortOffers(true));
     }
   }
 
