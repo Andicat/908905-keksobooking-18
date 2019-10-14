@@ -8,7 +8,7 @@
     var filteredOffers = offers.filter(function (it) {
       return it.offer.type === type;
     });
-    return filteredOffers;
+    return filteredOffers.slice(0, OFFERS_COUNT);
   }
 
   function sortOffers(type) {
