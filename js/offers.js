@@ -1,36 +1,33 @@
 'use strict';
 
 (function () {
-  var OFFERS_COUNT = 5;
+  var OFFERS_MAX = 5;
   var offers;
 
-  function filterOffers(type) {
-    var filteredOffers = offers.filter(function (it) {
-      return it.offer.type === type;
-    });
-    return filteredOffers.slice(0, OFFERS_COUNT);
-  }
-
-  function sortOffers(type) {
-
+  function sortOffers(def) {
+    console.log(offers);
     var sortedOffers = offers.sort(function (left, right) {
-      var rankDiff = getRank(right, type) - getRank(left, type);
+      var rankDiff = getRank(right) - getRank(left);
       if (rankDiff === 0) {
         rankDiff = pricesComparator(left.offer.price, right.offer.price);
       }
       return rankDiff;
+    }).filter(function (it) {
+      return def ? true : it.rank > 0;
     });
-
-    return sortedOffers.slice(0, OFFERS_COUNT);
+    
+    return sortedOffers.slice(0, OFFERS_MAX);
   }
 
-  var getRank = function (offer, type) {
-    var rank = 0;
-
-    if (offer.offer.type === type) {
-      rank += 1;
+  var getRank = function (offer) {
+    offer.rank = 0;
+    if (offer.offer.type === window.filter.form['housing-type'].value) {
+      offer.rank += 1;
     }
-    return rank;
+    if (offer.offer.type === window.filter.form['housing-type'].value) {
+      offer.rank += 1;
+    }
+    return offer.rank;
   };
 
   var pricesComparator = function (left, right) {
@@ -50,7 +47,7 @@
   // экспорт
   window.offers = {
     offers: offers,
-    filterOffers: filterOffers,
+    OFFERS_MAX: OFFERS_MAX,
     sortOffers: sortOffers
   };
 })();
