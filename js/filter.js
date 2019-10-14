@@ -8,7 +8,7 @@
     window.card.closeCard();
     window.pins.deletePins();
     window.pins.createPins(window.offers.sortOffers());
-    //console.log(evt.target.value);
+    console.log(evt.target.value);
   }
 
   for (var i = 0; i < form.elements.length; i++) {
