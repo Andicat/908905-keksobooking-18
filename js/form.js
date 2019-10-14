@@ -27,7 +27,8 @@
   // смена типа жилья
   function onChangeType() {
     window.card.closeCard();
-    window.pins.createPins();
+    window.pins.deletePins();
+    window.pins.createPins(window.offers.filterOffers(form.type.value));
     checkMinPrice();
   }
 

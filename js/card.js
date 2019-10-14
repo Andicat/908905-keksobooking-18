@@ -55,9 +55,7 @@
 
   // удаляем карточку предложения с карты
   function closeCard() {
-    document.querySelectorAll('.map__pin').forEach(function (pinItem) {
-      pinItem.classList.remove('map__pin_active');
-    });
+    window.pins.disactivatePins();
     if (cardCurrentElement) {
       cardCurrentElement.remove();
     }

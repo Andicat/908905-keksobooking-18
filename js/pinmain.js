@@ -28,7 +28,7 @@
   function activatePinMain() {
     if (window.main.map.classList.contains('map--faded')) {
       window.main.activateMap();
-      window.pins.createPins();
+      window.pins.createPins(window.offers.sortOffers(window.form.form.type.value));
     }
   }
 

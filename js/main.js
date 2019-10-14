@@ -24,13 +24,14 @@
         window.pinMain.activatePinMain();
       }
       if (evt.target.classList.contains('map__pin')) {
-        window.card.showCard(window.pins.offers[evt.target.getAttribute('data-index')]);
+        window.card.showCard(window.offers.offers[evt.target.getAttribute('data-index')]);
       }
       if (evt.target.classList.contains('popup__close')) {
         window.card.closeCard();
       }
     }
     if (evt.keyCode === ESC_KEYCODE) {
+      window.pins.disactivatePins();
       window.card.closeCard();
       if (document.querySelector('.success')) {
         document.querySelector('.success').remove();
