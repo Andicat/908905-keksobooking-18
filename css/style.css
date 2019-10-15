@@ -217,6 +217,10 @@ fieldset {
   background-position: 0 -88px;
 }
 
+.map__pin + .map__pin_active::after {
+  background-position: 0 -88px;
+}
+
 .map__pin:active img,
 .map__pin--active img {
   -webkit-box-shadow: 0 0 15px 15px rgba(255, 86, 53, 0.7);

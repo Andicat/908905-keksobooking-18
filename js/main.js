@@ -6,13 +6,12 @@
 
   var map = document.querySelector('.map');
   var mapFilter = document.querySelector('.map__filters-container');
-  var filterForm = document.querySelector('.map__filters');
 
   // активируем карту и форму
   function activateMap() {
     map.classList.remove('map--faded');
     window.form.disableForm(false);
-    window.util.disableForm(filterForm, false, 'ad-form--disabled');
+    window.util.disableForm(window.filter.form, false, 'ad-form--disabled');
   }
 
   // обработка нажатия клавиш на клавиатуре
@@ -24,13 +23,14 @@
         window.pinMain.activatePinMain();
       }
       if (evt.target.classList.contains('map__pin')) {
-        window.card.showCard(window.pins.offers[evt.target.getAttribute('data-index')]);
+        window.card.showCard(window.offers.offers[evt.target.getAttribute('data-index')]);
       }
       if (evt.target.classList.contains('popup__close')) {
         window.card.closeCard();
       }
     }
     if (evt.keyCode === ESC_KEYCODE) {
+      window.pins.disactivatePins();
       window.card.closeCard();
       if (document.querySelector('.success')) {
         document.querySelector('.success').remove();
@@ -42,7 +42,7 @@
   });
 
   // по умолчанию формы не активные
-  window.util.disableForm(filterForm, true, 'ad-form--disabled');
+  window.util.disableForm(window.filter.form, true, 'ad-form--disabled');
   window.form.disableForm(true);
 
   // подставляются координаты центра метки

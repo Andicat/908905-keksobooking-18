@@ -49,14 +49,15 @@
     window.main.map.insertBefore(cardCurrentElement, window.main.mapFilter);
 
     cardCurrentElement.querySelector('.popup__close').addEventListener('click', function () {
-      window.main.map.removeChild(cardCurrentElement);
+      closeCard();
     });
   }
 
   // удаляем карточку предложения с карты
   function closeCard() {
+    window.pins.disactivatePins();
     if (cardCurrentElement) {
-      window.main.map.removeChild(cardCurrentElement);
+      cardCurrentElement.remove();
     }
   }
 

@@ -6,7 +6,6 @@
 
   var mapPinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
   var mapPins = document.querySelector('.map__pins');
-  var offers;
 
   // создаем метку через шаблон
   function renderPin(offer, index) {
@@ -20,27 +19,44 @@
 
     pinElement.addEventListener('click', function () {
       window.card.showCard(offer);
+      disactivatePins();
+      pinElement.classList.add('map__pin_active');
     });
 
     return pinElement;
   }
 
-  // вставляем метки на карту
-  function createPins() {
-    window.backend.load(function (data) {
-      offers = data;
-      var fragment = document.createDocumentFragment();
-
-      for (var i = 0; i < offers.length; i++) {
-        fragment.appendChild(renderPin(offers[i], i));
+  // удаляем метки с карты
+  function deletePins() {
+    var pinsOnMap = document.querySelectorAll('.map__pin');
+    for (var i = 0; i < pinsOnMap.length; i++) {
+      if (!pinsOnMap[i].classList.contains('map__pin--main')) {
+        mapPins.removeChild(pinsOnMap[i]);
       }
-      mapPins.appendChild(fragment);
-    }, window.backend.showError);
+    }
+  }
+
+  // деактивируем пины
+  function disactivatePins() {
+    document.querySelectorAll('.map__pin').forEach(function (pinItem) {
+      pinItem.classList.remove('map__pin_active');
+    });
+  }
+
+  // вставляем метки на карту
+  function createPins(pins) {
+    var fragment = document.createDocumentFragment();
+
+    for (var i = 0; i < pins.length; i++) {
+      fragment.appendChild(renderPin(pins[i], i));
+    }
+    mapPins.appendChild(fragment);
   }
 
   // экспорт
   window.pins = {
-    offers: offers,
-    createPins: createPins
+    createPins: createPins,
+    deletePins: deletePins,
+    disactivatePins: disactivatePins
   };
 })();
