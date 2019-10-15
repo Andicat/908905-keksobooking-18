@@ -27,7 +27,7 @@
     return false;
   }
 
-  function equal(par,value) {
+  function equal(par, value) {
     if (value == 'any') {
       return true;
     }
@@ -38,17 +38,17 @@
   }
 
   // смена типа жилья
-  function onChangeFilter(evt) {
+  function onChangeFilter() {
     window.card.closeCard();
     window.pins.deletePins();
     window.pins.createPins(window.offers.filterOffers());
-    console.log(evt.target.value);
+    // console.log(evt.target.value);
   }
 
   for (var i = 0; i < form.elements.length; i++) {
     form.elements[i].addEventListener('change', onChangeFilter);
   }
-  
+
   // экспорт
   window.filter = {
     form: form,

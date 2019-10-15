@@ -3,12 +3,12 @@
 (function () {
   var OFFERS_MAX = 5;
   var offers;
-  var rankMax;
+  // var rankMax;
 
-   function filterOffers() {
-    
+  function filterOffers() {
+
     var filteredOffers = offers.filter(function (it) {
-      console.log(it.offer);
+      // console.log(it.offer);
       return window.filter.equal(it.offer.type, window.filter.form['housing-type'].value);
     }).filter(function (it) {
       return window.filter.inRange(it.offer.price, window.filter.form['housing-price'].value);
@@ -17,13 +17,10 @@
     }).filter(function (it) {
       return window.filter.equal(it.offer.guests, window.filter.form['housing-guests'].value);
     });
-
-    
-    
     return filteredOffers.slice(0, OFFERS_MAX);
   }
-  
-  function sortOffers(def) {
+
+  /* function sortOffers(def) {
     rankMax = 0;
     //if (window.filter.form['housing-type'].value !== 'any' || window.filter.form['housing-price'].value !== 'any') {
     //}
@@ -62,7 +59,7 @@
       return 0;
     }
   };
-
+*/
   window.backend.load(function (data) {
     offers = data;
   }, window.backend.showError);
@@ -71,7 +68,7 @@
   window.offers = {
     offers: offers,
     OFFERS_MAX: OFFERS_MAX,
-    sortOffers: sortOffers,
+    // sortOffers: sortOffers,
     filterOffers: filterOffers
   };
 })();
