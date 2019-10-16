@@ -6,26 +6,33 @@
 
   var RUSSIAN_WORDS = {flat: 'Квартира', bungalo: 'Бунгало', house: 'Дом', palace: 'Дворец'};
 
-  // создаем код для вставки списка преимуществ в карточку
-  function createFeaturesHTML(features) {
-    var featuresHTMLText = '';
-
-    for (var i = 0; i < features.length; i++) {
-      featuresHTMLText = featuresHTMLText + '<li class="popup__feature popup__feature--' + features[i] + '"></li>';
+  // вставкf списка преимуществ в карточку
+  function createFeatures(cardFeatures, features) {
+    while (cardFeatures.firstChild) {
+      cardFeatures.removeChild(cardFeatures.firstChild);
     }
-
-    return featuresHTMLText;
+    features.forEach(function(it) {
+      var featureItem = document.createElement('li');
+      featureItem.classList.add('popup__feature');
+      featureItem.classList.add('popup__feature--' + it);
+      cardFeatures.appendChild(featureItem);
+    });
   }
 
-  // создаем код для вставки фото в карточку
-  function createPhotosHTML(photos) {
-    var photosHTMLText = '';
-
-    for (var i = 0; i < photos.length; i++) {
-      photosHTMLText = photosHTMLText + '<img src="' + photos[i] + '" class="popup__photo" width="45" height="40" alt="Фотография жилья">';
+  // вставка фото в карточку
+  function createPhotos(cardPhotos, photos) {
+    while (cardPhotos.firstChild) {
+      cardPhotos.removeChild(cardPhotos.firstChild);
     }
-
-    return photosHTMLText;
+    photos.forEach(function(it) {
+      var photoItem = document.createElement('img');
+      photoItem.classList.add('popup__photo');
+      photoItem.src = it;
+      photoItem.width = 45;
+      photoItem.height = 40;
+      photoItem.alt = 'Фотография жилья';
+      cardPhotos.appendChild(photoItem);
+    });
   }
 
   // создаем карточку предложения и вставляем ее на карту
@@ -41,11 +48,11 @@
     cardCurrentElement.querySelector('.popup__type').textContent = RUSSIAN_WORDS[offer.offer.type];
     cardCurrentElement.querySelector('.popup__text--capacity').textContent = offer.offer.rooms + ' комнаты для ' + offer.offer.guests + ' гостей.';
     cardCurrentElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + offer.offer.checkin + ', выезд до ' + offer.offer.checkout;
-    cardCurrentElement.querySelector('.popup__features').innerHTML = createFeaturesHTML(offer.offer.features);
     cardCurrentElement.querySelector('.popup__description').textContent = offer.offer.description;
-    cardCurrentElement.querySelector('.popup__photos').innerHTML = createPhotosHTML(offer.offer.photos);
     cardCurrentElement.querySelector('.popup__avatar').src = offer.author.avatar;
-
+    createFeatures(cardCurrentElement.querySelector('.popup__features'), offer.offer.features);
+    createPhotos(cardCurrentElement.querySelector('.popup__photos'), offer.offer.photos);
+    
     window.main.map.insertBefore(cardCurrentElement, window.main.mapFilter);
 
     cardCurrentElement.querySelector('.popup__close').addEventListener('click', function () {

@@ -1,11 +1,6 @@
 'use strict';
 
 (function () {
-  // получаем случайный элемент из массива
-  function getRandomElementFromArray(arr) {
-    return arr[Math.round((arr.length - 1) * Math.random())];
-  }
-
   // делаем элементы формы неактивными
   function disableForm(form, isDisabled, disabledClass) {
     var formElements = form.elements;
@@ -22,7 +17,6 @@
 
   // экспорт
   window.util = {
-    getRandomElementFromArray: getRandomElementFromArray,
     disableForm: disableForm
   };
 })();
