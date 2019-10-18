@@ -11,7 +11,7 @@
     while (cardFeatures.firstChild) {
       cardFeatures.removeChild(cardFeatures.firstChild);
     }
-    features.forEach(function(it) {
+    features.forEach(function (it) {
       var featureItem = document.createElement('li');
       featureItem.classList.add('popup__feature');
       featureItem.classList.add('popup__feature--' + it);
@@ -24,7 +24,7 @@
     while (cardPhotos.firstChild) {
       cardPhotos.removeChild(cardPhotos.firstChild);
     }
-    photos.forEach(function(it) {
+    photos.forEach(function (it) {
       var photoItem = document.createElement('img');
       photoItem.classList.add('popup__photo');
       photoItem.src = it;
@@ -52,7 +52,7 @@
     cardCurrentElement.querySelector('.popup__avatar').src = offer.author.avatar;
     createFeatures(cardCurrentElement.querySelector('.popup__features'), offer.offer.features);
     createPhotos(cardCurrentElement.querySelector('.popup__photos'), offer.offer.photos);
-    
+
     window.main.map.insertBefore(cardCurrentElement, window.main.mapFilter);
 
     cardCurrentElement.querySelector('.popup__close').addEventListener('click', function () {
