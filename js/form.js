@@ -10,7 +10,6 @@
   function checkRoomsCapacity() {
     var roomsCapacity = form.rooms.value;
     var capacityOptions = form.capacity.options;
-
     for (var i = 0; i < capacityOptions.length; i++) {
       if (roomsCapacity < ROOMS_FOR_NOBODY) {
         capacityOptions[i].disabled = ((capacityOptions[i].value > 0 & capacityOptions[i].value <= roomsCapacity) ? false : true);
@@ -78,8 +77,7 @@
     }
   }
 
-  function resetForm() {
-    var formElements = form.elements;
+  function resetFormElements(formElements) {
     for (var i = 0; i < formElements.length; i++) {
       var fieldType = formElements[i].type.toLowerCase();
       switch (fieldType) {
@@ -100,10 +98,11 @@
           break;
       }
     }
-    checkRoomsCapacity();
-    checkMinPrice();
+  }
+
+  function resetPins() {
     var pins = document.querySelectorAll('.map__pin');
-    for (i = 0; i < pins.length; i++) {
+    for (var i = 0; i < pins.length; i++) {
       if (!pins[i].classList.contains('map__pin--main')) {
         pins[i].remove();
       } else {
@@ -112,6 +111,13 @@
         window.pinMain.setPinMainAddress(true);
       }
     }
+  }
+
+  function resetForm() {
+    resetFormElements(form.elements);
+    resetPins();
+    checkRoomsCapacity();
+    checkMinPrice();
     window.main.map.classList.add('map--faded');
     window.card.closeCard();
   }

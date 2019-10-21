@@ -6,34 +6,18 @@
 
   var RUSSIAN_WORDS = {flat: 'Квартира', bungalo: 'Бунгало', house: 'Дом', palace: 'Дворец'};
 
-  // вставкf списка преимуществ в карточку
+  // вставкa списка преимуществ в карточку
   function createFeatures(cardFeatures, features) {
-    var cardFeaturesList = cardFeatures.querySelectorAll('.popup__feature');
-    //console.log(features);
-    //cardPhotos.querySelector('.popup__photo').remove();
-    /*cardFeaturesList.forEach(function (it) {
-      if ( features.indexOf(it.filter.value) >= 0);) {
-        cardFeatures.removeChild(it);
-      }
-    });
-
-
-
-   /* while (cardFeatures.firstChild) {
-      cardFeatures.removeChild(cardFeatures.firstChild);
-    }
-    features.forEach(function (it) {
-      var featureItem = document.createElement('li');
-      featureItem.classList.add('popup__feature');
-      featureItem.classList.add('popup__feature--' + it);
-      cardFeatures.appendChild(featureItem);
-    });*/
+    cardFeatures.textContent = '';
+    cardFeatures.insertAdjacentHTML('afterBegin', features.map(function (it) {
+      return '<li class="popup__feature popup__feature--' + it + '"></li>';
+    }).join(' '));
   }
 
   // вставка фото в карточку
   function createPhotos(cardPhotos, photos) {
     var cardPhotoTemplate = cardPhotos.querySelector('.popup__photo');
-    cardPhotos.querySelector('.popup__photo').remove();
+    cardPhotos.textContent = '';
     photos.forEach(function (it) {
       var photoItem = cardPhotoTemplate.cloneNode(true);
       photoItem.src = it;
