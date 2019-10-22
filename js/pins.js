@@ -29,11 +29,12 @@
   // удаляем метки с карты
   function deletePins() {
     var pinsOnMap = document.querySelectorAll('.map__pin');
-    for (var i = 0; i < pinsOnMap.length; i++) {
-      if (!pinsOnMap[i].classList.contains('map__pin--main')) {
-        mapPins.removeChild(pinsOnMap[i]);
+
+    pinsOnMap.forEach(function (pinOnItem) {
+      if (!pinOnItem.classList.contains('map__pin--main')) {
+        mapPins.removeChild(pinOnItem);
       }
-    }
+    });
   }
 
   // деактивируем пины
@@ -47,9 +48,10 @@
   function createPins(pins) {
     var fragment = document.createDocumentFragment();
 
-    for (var i = 0; i < pins.length; i++) {
-      fragment.appendChild(renderPin(pins[i], i));
-    }
+    pins.forEach(function (pinItem) {
+      fragment.appendChild(renderPin(pinItem, pins.indexOf(pinItem)));
+    });
+
     mapPins.appendChild(fragment);
   }
 

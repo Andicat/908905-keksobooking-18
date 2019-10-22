@@ -17,9 +17,11 @@
         onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
       }
     });
+
     xhr.addEventListener('error', function () {
       onError('Произошла ошибка соединения');
     });
+
     xhr.addEventListener('timeout', function () {
       onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
     });
@@ -52,9 +54,11 @@
 
     errorText.textContent = 'Произошла ошибка';
     document.querySelector('main').appendChild(errorMessage);
+
     errorCloseButton.addEventListener('click', function () {
       document.querySelector('main').removeChild(errorMessage);
     });
+
     errorMessage.addEventListener('click', function () {
       document.querySelector('main').removeChild(errorMessage);
     });
@@ -68,6 +72,7 @@
 
     successText.textContent = 'Данные успешно отправлены';
     document.querySelector('main').appendChild(successMessage);
+
     successMessage.addEventListener('click', function () {
       document.querySelector('main').removeChild(successMessage);
     });

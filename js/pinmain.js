@@ -28,7 +28,7 @@
   function activatePinMain() {
     if (window.main.map.classList.contains('map--faded')) {
       window.main.activateMap();
-      window.pins.createPins(window.offers.sortOffers(window.filter.form['housing-type'].value));
+      window.pins.createPins(window.filter.filterOffers(window.filter.offers));
     }
   }
 
@@ -42,7 +42,12 @@
 
     var dragged = false;
 
-    var onMouseMove = function (moveEvt) {
+    function onClickPreventDefault(clEvt) {
+      clEvt.preventDefault();
+      mapPinMain.removeEventListener('click', onClickPreventDefault);
+    }
+
+    function onMouseMove(moveEvt) {
       moveEvt.preventDefault();
       dragged = true;
       // смещение мышки относительно начальных координат
@@ -60,22 +65,19 @@
       mapPinMain.style.left = Math.min(Math.max((mapPinMain.offsetLeft - shift.x), limits.left), limits.right - PIN_MAIN_WIDTH) + 'px';
 
       setPinMainAddress(true);
-    };
+    }
 
-    var onMouseUp = function (upEvt) {
+    function onMouseUp(upEvt) {
       upEvt.preventDefault();
 
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
 
       if (dragged) {
-        var onClickPreventDefault = function (clEvt) {
-          clEvt.preventDefault();
-          mapPinMain.removeEventListener('click', onClickPreventDefault);
-        };
+        onClickPreventDefault(evt);
         mapPinMain.addEventListener('click', onClickPreventDefault);
       }
-    };
+    }
 
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);

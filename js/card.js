@@ -2,53 +2,53 @@
 
 (function () {
   var mapCardTemplate = document.querySelector('#card').content.querySelector('.map__card');
-  var cardCurrentElement;
+  var popup;
 
   var RUSSIAN_WORDS = {flat: 'Квартира', bungalo: 'Бунгало', house: 'Дом', palace: 'Дворец'};
 
-  // создаем код для вставки списка преимуществ в карточку
-  function createFeaturesHTML(features) {
-    var featuresHTMLText = '';
+  // вставкa списка преимуществ в карточку
+  function createFeatures(cardFeatures, features) {
+    cardFeatures.textContent = '';
 
-    for (var i = 0; i < features.length; i++) {
-      featuresHTMLText = featuresHTMLText + '<li class="popup__feature popup__feature--' + features[i] + '"></li>';
-    }
-
-    return featuresHTMLText;
+    cardFeatures.insertAdjacentHTML('afterBegin', features.map(function (it) {
+      return '<li class="popup__feature popup__feature--' + it + '"></li>';
+    }).join(' '));
   }
 
-  // создаем код для вставки фото в карточку
-  function createPhotosHTML(photos) {
-    var photosHTMLText = '';
+  // вставка фото в карточку
+  function createPhotos(cardPhotos, photos) {
+    var cardPhotoTemplate = cardPhotos.querySelector('.popup__photo');
+    cardPhotos.textContent = '';
 
-    for (var i = 0; i < photos.length; i++) {
-      photosHTMLText = photosHTMLText + '<img src="' + photos[i] + '" class="popup__photo" width="45" height="40" alt="Фотография жилья">';
-    }
-
-    return photosHTMLText;
+    photos.forEach(function (photoSrc) {
+      var photoItem = cardPhotoTemplate.cloneNode(true);
+      photoItem.src = photoSrc;
+      cardPhotos.appendChild(photoItem);
+    });
   }
 
   // создаем карточку предложения и вставляем ее на карту
   function showCard(offer) {
     if (window.main.map.querySelector('.map__card')) {
-      window.main.map.removeChild(cardCurrentElement);
+      window.main.map.removeChild(popup);
     }
-    cardCurrentElement = mapCardTemplate.cloneNode(true);
 
-    cardCurrentElement.querySelector('.popup__title').textContent = offer.offer.title;
-    cardCurrentElement.querySelector('.popup__text--address').textContent = offer.offer.address;
-    cardCurrentElement.querySelector('.popup__text--price').textContent = offer.offer.price + '¥/ночь';
-    cardCurrentElement.querySelector('.popup__type').textContent = RUSSIAN_WORDS[offer.offer.type];
-    cardCurrentElement.querySelector('.popup__text--capacity').textContent = offer.offer.rooms + ' комнаты для ' + offer.offer.guests + ' гостей.';
-    cardCurrentElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + offer.offer.checkin + ', выезд до ' + offer.offer.checkout;
-    cardCurrentElement.querySelector('.popup__features').innerHTML = createFeaturesHTML(offer.offer.features);
-    cardCurrentElement.querySelector('.popup__description').textContent = offer.offer.description;
-    cardCurrentElement.querySelector('.popup__photos').innerHTML = createPhotosHTML(offer.offer.photos);
-    cardCurrentElement.querySelector('.popup__avatar').src = offer.author.avatar;
+    popup = mapCardTemplate.cloneNode(true);
 
-    window.main.map.insertBefore(cardCurrentElement, window.main.mapFilter);
+    popup.querySelector('.popup__title').textContent = offer.offer.title;
+    popup.querySelector('.popup__text--address').textContent = offer.offer.address;
+    popup.querySelector('.popup__text--price').textContent = offer.offer.price + '¥/ночь';
+    popup.querySelector('.popup__type').textContent = RUSSIAN_WORDS[offer.offer.type];
+    popup.querySelector('.popup__text--capacity').textContent = offer.offer.rooms + ' комнаты для ' + offer.offer.guests + ' гостей.';
+    popup.querySelector('.popup__text--time').textContent = 'Заезд после ' + offer.offer.checkin + ', выезд до ' + offer.offer.checkout;
+    popup.querySelector('.popup__description').textContent = offer.offer.description;
+    popup.querySelector('.popup__avatar').src = offer.author.avatar;
+    createFeatures(popup.querySelector('.popup__features'), offer.offer.features);
+    createPhotos(popup.querySelector('.popup__photos'), offer.offer.photos);
 
-    cardCurrentElement.querySelector('.popup__close').addEventListener('click', function () {
+    window.main.map.insertBefore(popup, window.main.mapFilter);
+
+    popup.querySelector('.popup__close').addEventListener('click', function () {
       closeCard();
     });
   }
@@ -56,8 +56,8 @@
   // удаляем карточку предложения с карты
   function closeCard() {
     window.pins.disactivatePins();
-    if (cardCurrentElement) {
-      cardCurrentElement.remove();
+    if (popup) {
+      popup.remove();
     }
   }
 
