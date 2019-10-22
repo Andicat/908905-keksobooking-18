@@ -2,12 +2,17 @@
 
 (function () {
   var ROOMS_FOR_NOBODY = 100;
-  var MIN_PRICES = {flat: 1000, bungalo: 0, house: 5000, palace: 10000};
+  var MIN_PRICES = {
+    flat: 1000,
+    bungalo: 0,
+    house: 5000,
+    palace: 10000
+  };
 
   var form = document.querySelector('.ad-form');
 
   // проверка соответствия кол-ва комнат и гостей
-  function checkRoomsCapacity() {
+  function setRoomsCapacity() {
     var roomsCapacity = form.rooms.value;
     var capacityOptions = form.capacity.options;
     for (var i = 0; i < capacityOptions.length; i++) {
@@ -24,7 +29,7 @@
   }
 
   // проверка минимальной цены
-  function checkMinPrice() {
+  function setMinPrice() {
     var minPrice = MIN_PRICES[form.type.value];
 
     form.price.setAttribute('min', minPrice);
@@ -69,11 +74,19 @@
     }
   }
 
-  function disableForm(isDisabled) {
-    window.util.disableForm(form, isDisabled, 'ad-form--disabled');
-    if (!isDisabled) {
-      checkRoomsCapacity();
-      checkMinPrice();
+  function disableOfferForm(isDisabled) {
+    var formElements = form.elements;
+
+    if (isDisabled) {
+      form.classList.add('ad-form--disabled');
+    } else {
+      form.classList.remove('ad-form--disabled');
+      setRoomsCapacity();
+      setMinPrice();
+    }
+
+    for (var i = 0; i < formElements.length; i++) {
+      formElements[i].disabled = isDisabled;
     }
   }
 
@@ -116,14 +129,14 @@
   function resetForm() {
     resetFormElements(form.elements);
     resetPins();
-    checkRoomsCapacity();
-    checkMinPrice();
+    setRoomsCapacity();
+    setMinPrice();
     window.main.map.classList.add('map--faded');
     window.card.closeCard();
   }
 
-  form.rooms.addEventListener('change', checkRoomsCapacity);
-  form.type.addEventListener('change', checkMinPrice);
+  form.rooms.addEventListener('change', setRoomsCapacity);
+  form.type.addEventListener('change', setMinPrice);
   form.timein.addEventListener('change', checkCheckTime);
   form.timeout.addEventListener('change', checkCheckTime);
 
@@ -149,6 +162,6 @@
   // экспорт
   window.form = {
     form: form,
-    disableForm: disableForm
+    disableOfferForm: disableOfferForm
   };
 })();

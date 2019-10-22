@@ -10,40 +10,47 @@
   // активируем карту и форму
   function activateMap() {
     map.classList.remove('map--faded');
-    window.form.disableForm(false);
-    window.util.disableForm(window.filter.form, false, 'ad-form--disabled');
+    window.form.disableOfferForm(false);
+    window.filter.disableFilterForm(false);
+  }
+
+  function keydownEnter(target) {
+    if (target === window.pinMain.mapPinMain) {
+      window.pinMain.activatePinMain();
+    }
+    if (target.classList.contains('map__pin')) {
+      window.card.showCard(window.offers.offers[target.getAttribute('data-index')]);
+    }
+    if (target.classList.contains('popup__close')) {
+      window.card.closeCard();
+    }
+  }
+
+  function keydownEsc() {
+    window.pins.disactivatePins();
+    window.card.closeCard();
+    if (document.querySelector('.success')) {
+      document.querySelector('.success').remove();
+    }
+    if (document.querySelector('.error')) {
+      document.querySelector('.error').remove();
+    }
   }
 
   // обработка нажатия клавиш на клавиатуре
   window.addEventListener('keydown', function (evt) {
 
     if (evt.keyCode === ENTER_KEYCODE) {
-
-      if (evt.target === window.pinMain.mapPinMain) {
-        window.pinMain.activatePinMain();
-      }
-      if (evt.target.classList.contains('map__pin')) {
-        window.card.showCard(window.offers.offers[evt.target.getAttribute('data-index')]);
-      }
-      if (evt.target.classList.contains('popup__close')) {
-        window.card.closeCard();
-      }
+      keydownEnter(evt.target);
     }
     if (evt.keyCode === ESC_KEYCODE) {
-      window.pins.disactivatePins();
-      window.card.closeCard();
-      if (document.querySelector('.success')) {
-        document.querySelector('.success').remove();
-      }
-      if (document.querySelector('.error')) {
-        document.querySelector('.error').remove();
-      }
+      keydownEsc();
     }
   });
 
   // по умолчанию формы не активные
-  window.util.disableForm(window.filter.form, true, 'ad-form--disabled');
-  window.form.disableForm(true);
+  window.filter.disableFilterForm(true);
+  window.form.disableOfferForm(true);
 
   // подставляются координаты центра метки
   window.pinMain.setPinMainAddress(false);

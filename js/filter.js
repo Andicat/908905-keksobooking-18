@@ -53,6 +53,20 @@
     return filteredOffers.slice(0, OFFERS_MAX);
   }
 
+  function disableFilterForm(isDisabled) {
+    var formElements = form.elements;
+
+    if (isDisabled) {
+      form.classList.add('ad-form--disabled');
+    } else {
+      form.classList.remove('ad-form--disabled');
+    }
+
+    for (var i = 0; i < formElements.length; i++) {
+      formElements[i].disabled = isDisabled;
+    }
+  }
+
   function onChangeFilter() {
     window.card.closeCard();
     window.pins.deletePins();
@@ -72,6 +86,7 @@
     offers: offers,
     form: form,
     filterOffers: filterOffers,
-    onChangeFilter: onChangeFilter
+    onChangeFilter: onChangeFilter,
+    disableFilterForm: disableFilterForm
   };
 })();

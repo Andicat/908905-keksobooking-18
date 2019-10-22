@@ -9,6 +9,7 @@
   // вставкa списка преимуществ в карточку
   function createFeatures(cardFeatures, features) {
     cardFeatures.textContent = '';
+
     cardFeatures.insertAdjacentHTML('afterBegin', features.map(function (it) {
       return '<li class="popup__feature popup__feature--' + it + '"></li>';
     }).join(' '));
@@ -18,9 +19,10 @@
   function createPhotos(cardPhotos, photos) {
     var cardPhotoTemplate = cardPhotos.querySelector('.popup__photo');
     cardPhotos.textContent = '';
-    photos.forEach(function (it) {
+
+    photos.forEach(function (photoSrc) {
       var photoItem = cardPhotoTemplate.cloneNode(true);
-      photoItem.src = it;
+      photoItem.src = photoSrc;
       cardPhotos.appendChild(photoItem);
     });
   }
@@ -30,6 +32,7 @@
     if (window.main.map.querySelector('.map__card')) {
       window.main.map.removeChild(popup);
     }
+
     popup = mapCardTemplate.cloneNode(true);
 
     popup.querySelector('.popup__title').textContent = offer.offer.title;
