@@ -30,6 +30,7 @@
       window.main.activateMap();
       window.pins.createPins(window.filter.filterOffers(window.filter.offers));
     }
+    setPinMainAddress(true);
   }
 
   mapPinMain.addEventListener('mousedown', function (evt) {

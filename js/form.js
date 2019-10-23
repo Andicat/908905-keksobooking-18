@@ -126,13 +126,16 @@
     }
   }
 
-  function resetForm() {
+  function resetPage() {
     resetFormElements(form.elements);
+    window.photo.deletePhotos('reset');
+    resetFormElements(window.filter.form.elements);
+    window.filter.disableFilterForm(true);
+    window.form.disableOfferForm(true);
     resetPins();
-    setRoomsCapacity();
-    setMinPrice();
-    window.main.map.classList.add('map--faded');
     window.card.closeCard();
+    window.main.map.classList.add('map--faded');
+    window.pinMain.setPinMainAddress(false);
   }
 
   form.rooms.addEventListener('change', setRoomsCapacity);
@@ -153,10 +156,15 @@
 
   form.addEventListener('submit', function (evt) {
     window.backend.save(new FormData(form), function () {
-      resetForm();
+      resetPage();
       window.backend.showSuccess();
     }, window.backend.showError);
     evt.preventDefault();
+  });
+
+  form.addEventListener('reset', function (evt) {
+    evt.preventDefault();
+    resetPage();
   });
 
   // экспорт

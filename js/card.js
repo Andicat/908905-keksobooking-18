@@ -4,7 +4,12 @@
   var mapCardTemplate = document.querySelector('#card').content.querySelector('.map__card');
   var popup;
 
-  var RUSSIAN_WORDS = {flat: 'Квартира', bungalo: 'Бунгало', house: 'Дом', palace: 'Дворец'};
+  var RUSSIAN_WORDS = {
+    flat: 'Квартира', 
+    bungalo: 'Бунгало', 
+    house: 'Дом', 
+    palace: 'Дворец'
+  };
 
   // вставкa списка преимуществ в карточку
   function createFeatures(cardFeatures, features) {

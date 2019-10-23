@@ -5,6 +5,7 @@
 
   var avatarFileChooser = document.querySelector('.ad-form-header__upload input[type=file]');
   var avatarPreview = document.querySelector('.ad-form-header__preview img');
+  var avatarPreviewDefault = avatarPreview.src;
   var photoFileChooser = document.querySelector('.ad-form__upload input[type=file]');
   var photoContainer = document.querySelector('.ad-form__photo-container');
   var photoPreviewTemplate = document.querySelector('.ad-form__photo');
@@ -31,12 +32,16 @@
   }
 
   function deletePhotos(target) {
-    if (target === photoFileChooser) {
+    if (target === photoFileChooser || target === 'reset') {
       var photos = photoContainer.querySelectorAll('.ad-form__photo');
 
       photos.forEach(function (it) {
         photoContainer.removeChild(it);
       });
+    }
+    if (target === 'reset') {
+      avatarPreview.src = avatarPreviewDefault;
+      photoContainer.appendChild(photoPreviewTemplate);
     }
   }
 
@@ -61,4 +66,9 @@
 
   avatarFileChooser.addEventListener('change', loadPhotos);
   photoFileChooser.addEventListener('change', loadPhotos);
+
+  // экспорт
+  window.photo = {
+    deletePhotos: deletePhotos
+  };
 })();

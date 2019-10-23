@@ -14,7 +14,7 @@
     window.filter.disableFilterForm(false);
   }
 
-  function keydownEnter(target) {
+  function onPressEnter(target) {
     if (target === window.pinMain.mapPinMain) {
       window.pinMain.activatePinMain();
     }
@@ -26,7 +26,7 @@
     }
   }
 
-  function keydownEsc() {
+  function onPressEsc() {
     window.pins.disactivatePins();
     window.card.closeCard();
     if (document.querySelector('.success')) {
@@ -41,10 +41,10 @@
   window.addEventListener('keydown', function (evt) {
 
     if (evt.keyCode === ENTER_KEYCODE) {
-      keydownEnter(evt.target);
+      onPressEnter(evt.target);
     }
     if (evt.keyCode === ESC_KEYCODE) {
-      keydownEsc();
+      onPressEsc();
     }
   });
 

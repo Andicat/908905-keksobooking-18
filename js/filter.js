@@ -32,21 +32,21 @@
   }
 
   function filterOffers(offersArray) {
-    var filterArray = [];
+    var filtersArray = [];
     form.querySelectorAll('.map__filter').forEach(function (filter) {
-      filterArray.push({name: filter.name.replace('housing-', ''), value: filter.value});
+      filtersArray.push({name: filter.name.replace('housing-', ''), value: filter.value});
     });
     form.querySelectorAll('.map__checkbox:checked').forEach(function (filter) {
-      filterArray.push({name: 'feature', value: filter.value});
+      filtersArray.push({name: 'feature', value: filter.value});
     });
 
     var filteredOffers = offersArray.slice().filter(function (it) {
       var i = 0;
       var result = true;
       do {
-        result = (filterArray[i].value === 'any' ? true : isEqual(it.offer, filterArray[i]));
+        result = (filtersArray[i].value === 'any' ? true : isEqual(it.offer, filtersArray[i]));
         i++;
-      } while (i < filterArray.length && result);
+      } while (i < filtersArray.length && result);
       return result;
     });
 
