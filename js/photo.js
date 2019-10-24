@@ -5,7 +5,7 @@
 
   var avatarFileChooser = document.querySelector('.ad-form-header__upload input[type=file]');
   var avatarPreview = document.querySelector('.ad-form-header__preview img');
-  var avatarPreviewDefault = avatarPreview.src;
+  var avatarPreviewDefault = avatarPreview.getAttribute('src');
   var photoFileChooser = document.querySelector('.ad-form__upload input[type=file]');
   var photoContainer = document.querySelector('.ad-form__photo-container');
   var photoPreviewTemplate = document.querySelector('.ad-form__photo');
