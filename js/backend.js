@@ -5,6 +5,8 @@
   var serverTime = 10000;
   var statusOk = 200;
 
+  var mainContainer = document.querySelector('main');
+
   // настройки загрузки/отправки/ошибок
   function setup(onLoad, onError) {
     var xhr = new XMLHttpRequest();
@@ -53,14 +55,14 @@
     var errorCloseButton = errorMessage.querySelector('.error__button');
 
     errorText.textContent = 'Произошла ошибка';
-    document.querySelector('main').appendChild(errorMessage);
+    mainContainer.appendChild(errorMessage);
 
     errorCloseButton.addEventListener('click', function () {
-      document.querySelector('main').removeChild(errorMessage);
+      mainContainer.removeChild(errorMessage);
     });
 
     errorMessage.addEventListener('click', function () {
-      document.querySelector('main').removeChild(errorMessage);
+      mainContainer.removeChild(errorMessage);
     });
   }
 
@@ -71,10 +73,10 @@
     var successText = successMessage.querySelector('.success__message');
 
     successText.textContent = 'Данные успешно отправлены';
-    document.querySelector('main').appendChild(successMessage);
+    mainContainer.appendChild(successMessage);
 
     successMessage.addEventListener('click', function () {
-      document.querySelector('main').removeChild(successMessage);
+      mainContainer.removeChild(successMessage);
     });
   }
 

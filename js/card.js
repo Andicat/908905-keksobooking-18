@@ -5,9 +5,9 @@
   var popup;
 
   var RUSSIAN_WORDS = {
-    flat: 'Квартира', 
-    bungalo: 'Бунгало', 
-    house: 'Дом', 
+    flat: 'Квартира',
+    bungalo: 'Бунгало',
+    house: 'Дом',
     palace: 'Дворец'
   };
 
