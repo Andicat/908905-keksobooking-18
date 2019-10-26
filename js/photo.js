@@ -45,7 +45,7 @@
     }
   }
 
-  function loadPhotos(evt) {
+  function onLoadPhotos(evt) {
     var fileChooser = evt.target;
     var files = fileChooser.files;
 
@@ -64,8 +64,8 @@
 
   photoFileChooser.setAttribute('multiple', 'multiple');
 
-  avatarFileChooser.addEventListener('change', loadPhotos);
-  photoFileChooser.addEventListener('change', loadPhotos);
+  avatarFileChooser.addEventListener('change', onLoadPhotos);
+  photoFileChooser.addEventListener('change', onLoadPhotos);
 
   // экспорт
   window.photo = {

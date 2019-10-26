@@ -4,7 +4,7 @@
   var mapCardTemplate = document.querySelector('#card').content.querySelector('.map__card');
   var popup;
 
-  var RUSSIAN_WORDS = {
+  var OfferTypes = {
     flat: 'Квартира',
     bungalo: 'Бунгало',
     house: 'Дом',
@@ -43,7 +43,7 @@
     popup.querySelector('.popup__title').textContent = offer.offer.title;
     popup.querySelector('.popup__text--address').textContent = offer.offer.address;
     popup.querySelector('.popup__text--price').textContent = offer.offer.price + '¥/ночь';
-    popup.querySelector('.popup__type').textContent = RUSSIAN_WORDS[offer.offer.type];
+    popup.querySelector('.popup__type').textContent = OfferTypes[offer.offer.type];
     popup.querySelector('.popup__text--capacity').textContent = offer.offer.rooms + ' комнаты для ' + offer.offer.guests + ' гостей.';
     popup.querySelector('.popup__text--time').textContent = 'Заезд после ' + offer.offer.checkin + ', выезд до ' + offer.offer.checkout;
     popup.querySelector('.popup__description').textContent = offer.offer.description;
@@ -53,9 +53,7 @@
 
     window.main.map.insertBefore(popup, window.main.mapFilter);
 
-    popup.querySelector('.popup__close').addEventListener('click', function () {
-      closeCard();
-    });
+    popup.querySelector('.popup__close').addEventListener('click', closeCard);
   }
 
   // удаляем карточку предложения с карты
@@ -63,6 +61,7 @@
     window.pins.disactivatePins();
     if (popup) {
       popup.remove();
+      popup.querySelector('.popup__close').removeEventListener('click', closeCard);
     }
   }
 

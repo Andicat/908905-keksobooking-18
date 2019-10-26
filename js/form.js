@@ -2,7 +2,7 @@
 
 (function () {
   var ROOMS_FOR_NOBODY = 100;
-  var MIN_PRICES = {
+  var MinPrices = {
     flat: 1000,
     bungalo: 0,
     house: 5000,
@@ -10,6 +10,7 @@
   };
 
   var form = document.querySelector('.ad-form');
+  var formTime = form.querySelector('.ad-form__element--time');
 
   // проверка соответствия кол-ва комнат и гостей
   function setRoomsCapacity() {
@@ -30,14 +31,14 @@
 
   // проверка минимальной цены
   function setMinPrice() {
-    var minPrice = MIN_PRICES[form.type.value];
+    var minPrice = MinPrices[form.type.value];
 
     form.price.setAttribute('min', minPrice);
     form.price.setAttribute('placeholder', minPrice);
   }
 
   // проверка времены заезда/выезда
-  function checkCheckTime(evt) {
+  function onChangeTime(evt) {
     switch (evt.target.name) {
       case 'timein':
         form.timeout.value = evt.target.value;
@@ -49,7 +50,7 @@
   }
 
   // проверка заголовка
-  function checkTitle() {
+  function onCheckTitle() {
     if (form.title.validity.tooShort) {
       form.title.setCustomValidity('Заголовок объявления должен состоять как минимум из 30 символов');
     } else if (form.title.validity.tooLong) {
@@ -62,7 +63,7 @@
   }
 
   // проверка цены
-  function checkPrice() {
+  function onCheckPrice() {
     if (form.price.validity.rangeOverflow) {
       form.price.setCustomValidity('Цена за ночь не может быть больше ' + form.price.max);
     } else if (form.price.validity.rangeUnderflow) {
@@ -74,13 +75,28 @@
     }
   }
 
+  function onSubmit(evt) {
+    window.backend.save(new FormData(form), function () {
+      resetPage();
+      window.backend.showSuccess();
+    }, window.backend.showError);
+    evt.preventDefault();
+  }
+
+  function onReset(evt) {
+    evt.preventDefault();
+    resetPage();
+  }
+
   function disableOfferForm(isDisabled) {
     var formElements = form.elements;
 
     if (isDisabled) {
       form.classList.add('ad-form--disabled');
+      removeListeners();
     } else {
       form.classList.remove('ad-form--disabled');
+      addListeners();
       setRoomsCapacity();
       setMinPrice();
     }
@@ -88,6 +104,26 @@
     for (var i = 0; i < formElements.length; i++) {
       formElements[i].disabled = isDisabled;
     }
+  }
+
+  function removeListeners() {
+    form.rooms.removeEventListener('change', setRoomsCapacity);
+    form.type.removeEventListener('change', setMinPrice);
+    formTime.removeEventListener('change', onChangeTime);
+    form.title.removeEventListener('invalid', onCheckTitle);
+    form.price.removeEventListener('invalid', onCheckPrice);
+    form.removeEventListener('submit', onSubmit);
+    form.removeEventListener('reset', onReset);
+  }
+
+  function addListeners() {
+    form.rooms.addEventListener('change', setRoomsCapacity);
+    form.type.addEventListener('change', setMinPrice);
+    formTime.addEventListener('change', onChangeTime);
+    form.title.addEventListener('invalid', onCheckTitle);
+    form.price.addEventListener('invalid', onCheckPrice);
+    form.addEventListener('submit', onSubmit);
+    form.addEventListener('reset', onReset);
   }
 
   function resetFormElements(formElements) {
@@ -138,34 +174,12 @@
     window.pinMain.setPinMainAddress(false);
   }
 
-  form.rooms.addEventListener('change', setRoomsCapacity);
-  form.type.addEventListener('change', setMinPrice);
-  form.timein.addEventListener('change', checkCheckTime);
-  form.timeout.addEventListener('change', checkCheckTime);
-
   form.title.setAttribute('minlength', 30);
   form.title.setAttribute('maxlength', 100);
-  form.title.required = true;
-  form.title.addEventListener('invalid', checkTitle);
-
   form.price.setAttribute('max', 1000000);
+  form.title.required = true;
   form.price.required = true;
-  form.price.addEventListener('invalid', checkPrice);
-
   form.address.readOnly = true;
-
-  form.addEventListener('submit', function (evt) {
-    window.backend.save(new FormData(form), function () {
-      resetPage();
-      window.backend.showSuccess();
-    }, window.backend.showError);
-    evt.preventDefault();
-  });
-
-  form.addEventListener('reset', function (evt) {
-    evt.preventDefault();
-    resetPage();
-  });
 
   // экспорт
   window.form = {

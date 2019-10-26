@@ -3,9 +3,10 @@
 (function () {
   var OFFERS_MAX = 5;
   var offers;
+  var dataLoaded = false;
 
   var form = document.querySelector('.map__filters');
-  var priceRangeMap = {
+  var PriceRangeMap = {
     'low': {
       'min': 0,
       'max': 10000
@@ -23,7 +24,7 @@
   function isEqual(par, filter) {
     switch (filter.name) {
       case 'price':
-        return (par[filter.name] >= priceRangeMap[filter.value].min && par[filter.name] < priceRangeMap[filter.value].max) ? true : false;
+        return (par[filter.name] >= PriceRangeMap[filter.value].min && par[filter.name] < PriceRangeMap[filter.value].max) ? true : false;
       case 'feature':
         return (par.features.indexOf(filter.value) >= 0);
       default:
@@ -79,11 +80,17 @@
 
   window.backend.load(function (data) {
     window.filter.offers = data;
+    window.filter.dataLoaded = true;
+    if (!window.main.map.classList.contains('map--faded')) {
+      window.filter.disableFilterForm(false);
+      window.pins.createPins(window.filter.filterOffers(window.filter.offers));
+    }
   }, window.backend.showError);
 
   // экспорт
   window.filter = {
     offers: offers,
+    dataLoaded: dataLoaded,
     form: form,
     filterOffers: filterOffers,
     onChangeFilter: onChangeFilter,

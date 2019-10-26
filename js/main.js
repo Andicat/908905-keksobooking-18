@@ -11,15 +11,11 @@
   function activateMap() {
     map.classList.remove('map--faded');
     window.form.disableOfferForm(false);
-    window.filter.disableFilterForm(false);
   }
 
   function onPressEnter(target) {
     if (target === window.pinMain.mapPinMain) {
       window.pinMain.activatePinMain();
-    }
-    if (target.classList.contains('map__pin')) {
-      window.card.showCard(window.offers.offers[target.getAttribute('data-index')]);
     }
     if (target.classList.contains('popup__close')) {
       window.card.closeCard();
@@ -27,7 +23,6 @@
   }
 
   function onPressEsc() {
-    window.pins.disactivatePins();
     window.card.closeCard();
     if (document.querySelector('.success')) {
       document.querySelector('.success').remove();
