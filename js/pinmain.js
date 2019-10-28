@@ -7,8 +7,8 @@
 
   var mapPinMain = document.querySelector('.map__pin--main');
   var mapPins = document.querySelector('.map__pins');
-  var mapPinMainX = mapPinMain.offsetLeft;
-  var mapPinMainY = mapPinMain.offsetTop;
+  var mapPinMainX = mapPinMain.getAttribute('offsetLeft');
+  var mapPinMainY = mapPinMain.getAttribute('offsetTop');
 
   var limits = {
     top: mapPins.offsetTop + PIN_MAIN_ACTIVE_HEIGHT,
@@ -28,8 +28,12 @@
   function activatePinMain() {
     if (window.main.map.classList.contains('map--faded')) {
       window.main.activateMap();
-      window.pins.createPins(window.filter.filterOffers(window.filter.offers));
+      if (window.filter.dataLoaded) {
+        window.filter.disableFilterForm(false);
+        window.pins.createPins(window.filter.filterOffers(window.filter.offers));
+      }
     }
+    setPinMainAddress(true);
   }
 
   mapPinMain.addEventListener('mousedown', function (evt) {

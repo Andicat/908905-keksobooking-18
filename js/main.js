@@ -11,23 +11,18 @@
   function activateMap() {
     map.classList.remove('map--faded');
     window.form.disableOfferForm(false);
-    window.filter.disableFilterForm(false);
   }
 
-  function keydownEnter(target) {
+  function onPressEnter(target) {
     if (target === window.pinMain.mapPinMain) {
       window.pinMain.activatePinMain();
-    }
-    if (target.classList.contains('map__pin')) {
-      window.card.showCard(window.offers.offers[target.getAttribute('data-index')]);
     }
     if (target.classList.contains('popup__close')) {
       window.card.closeCard();
     }
   }
 
-  function keydownEsc() {
-    window.pins.disactivatePins();
+  function onPressEsc() {
     window.card.closeCard();
     if (document.querySelector('.success')) {
       document.querySelector('.success').remove();
@@ -41,10 +36,10 @@
   window.addEventListener('keydown', function (evt) {
 
     if (evt.keyCode === ENTER_KEYCODE) {
-      keydownEnter(evt.target);
+      onPressEnter(evt.target);
     }
     if (evt.keyCode === ESC_KEYCODE) {
-      keydownEsc();
+      onPressEsc();
     }
   });
 

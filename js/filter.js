@@ -3,9 +3,10 @@
 (function () {
   var OFFERS_MAX = 5;
   var offers;
+  var dataLoaded = false;
 
   var form = document.querySelector('.map__filters');
-  var priceRangeMap = {
+  var PriceRangeMap = {
     'low': {
       'min': 0,
       'max': 10000
@@ -23,7 +24,7 @@
   function isEqual(par, filter) {
     switch (filter.name) {
       case 'price':
-        return (par[filter.name] >= priceRangeMap[filter.value].min && par[filter.name] < priceRangeMap[filter.value].max) ? true : false;
+        return (par[filter.name] >= PriceRangeMap[filter.value].min && par[filter.name] < PriceRangeMap[filter.value].max) ? true : false;
       case 'feature':
         return (par.features.indexOf(filter.value) >= 0);
       default:
@@ -32,21 +33,21 @@
   }
 
   function filterOffers(offersArray) {
-    var filterArray = [];
+    var filtersArray = [];
     form.querySelectorAll('.map__filter').forEach(function (filter) {
-      filterArray.push({name: filter.name.replace('housing-', ''), value: filter.value});
+      filtersArray.push({name: filter.name.replace('housing-', ''), value: filter.value});
     });
     form.querySelectorAll('.map__checkbox:checked').forEach(function (filter) {
-      filterArray.push({name: 'feature', value: filter.value});
+      filtersArray.push({name: 'feature', value: filter.value});
     });
 
     var filteredOffers = offersArray.slice().filter(function (it) {
       var i = 0;
       var result = true;
       do {
-        result = (filterArray[i].value === 'any' ? true : isEqual(it.offer, filterArray[i]));
+        result = (filtersArray[i].value === 'any' ? true : isEqual(it.offer, filtersArray[i]));
         i++;
-      } while (i < filterArray.length && result);
+      } while (i < filtersArray.length && result);
       return result;
     });
 
@@ -79,11 +80,17 @@
 
   window.backend.load(function (data) {
     window.filter.offers = data;
+    window.filter.dataLoaded = true;
+    if (!window.main.map.classList.contains('map--faded')) {
+      window.filter.disableFilterForm(false);
+      window.pins.createPins(window.filter.filterOffers(window.filter.offers));
+    }
   }, window.backend.showError);
 
   // экспорт
   window.filter = {
     offers: offers,
+    dataLoaded: dataLoaded,
     form: form,
     filterOffers: filterOffers,
     onChangeFilter: onChangeFilter,
