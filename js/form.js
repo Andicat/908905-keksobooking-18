@@ -2,6 +2,9 @@
 
 (function () {
   var ROOMS_FOR_NOBODY = 100;
+  var TITLE_MIN_LENGTH = 30;
+  var TITLE_MAX_LENGTH = 100;
+  var PRICE_MAX = 1000000;
   var MinPrices = {
     flat: 1000,
     bungalo: 0,
@@ -37,6 +40,15 @@
     form.price.setAttribute('placeholder', minPrice);
   }
 
+  function onChangeRooms() {
+    setRoomsCapacity();
+  }
+
+  function onChangeType() {
+    setMinPrice();
+  }
+
+
   // проверка времены заезда/выезда
   function onChangeTime(evt) {
     switch (evt.target.name) {
@@ -50,7 +62,7 @@
   }
 
   // проверка заголовка
-  function onCheckTitle() {
+  function onInvalidTitle() {
     if (form.title.validity.tooShort) {
       form.title.setCustomValidity('Заголовок объявления должен состоять как минимум из 30 символов');
     } else if (form.title.validity.tooLong) {
@@ -63,7 +75,7 @@
   }
 
   // проверка цены
-  function onCheckPrice() {
+  function onInvalidPrice() {
     if (form.price.validity.rangeOverflow) {
       form.price.setCustomValidity('Цена за ночь не может быть больше ' + form.price.max);
     } else if (form.price.validity.rangeUnderflow) {
@@ -75,7 +87,7 @@
     }
   }
 
-  function onSubmit(evt) {
+  function onSubmitForm(evt) {
     window.backend.save(new FormData(form), function () {
       resetPage();
       window.backend.showSuccess();
@@ -83,7 +95,7 @@
     evt.preventDefault();
   }
 
-  function onReset(evt) {
+  function onResetForm(evt) {
     evt.preventDefault();
     resetPage();
   }
@@ -107,23 +119,23 @@
   }
 
   function removeListeners() {
-    form.rooms.removeEventListener('change', setRoomsCapacity);
-    form.type.removeEventListener('change', setMinPrice);
+    form.rooms.removeEventListener('change', onChangeRooms);
+    form.type.removeEventListener('change', onChangeType);
     formTime.removeEventListener('change', onChangeTime);
-    form.title.removeEventListener('invalid', onCheckTitle);
-    form.price.removeEventListener('invalid', onCheckPrice);
-    form.removeEventListener('submit', onSubmit);
-    form.removeEventListener('reset', onReset);
+    form.title.removeEventListener('invalid', onInvalidTitle);
+    form.price.removeEventListener('invalid', onInvalidPrice);
+    form.removeEventListener('submit', onSubmitForm);
+    form.removeEventListener('reset', onResetForm);
   }
 
   function addListeners() {
-    form.rooms.addEventListener('change', setRoomsCapacity);
-    form.type.addEventListener('change', setMinPrice);
+    form.rooms.addEventListener('change', onChangeRooms);
+    form.type.addEventListener('change', onChangeType);
     formTime.addEventListener('change', onChangeTime);
-    form.title.addEventListener('invalid', onCheckTitle);
-    form.price.addEventListener('invalid', onCheckPrice);
-    form.addEventListener('submit', onSubmit);
-    form.addEventListener('reset', onReset);
+    form.title.addEventListener('invalid', onInvalidTitle);
+    form.price.addEventListener('invalid', onInvalidPrice);
+    form.addEventListener('submit', onSubmitForm);
+    form.addEventListener('reset', onResetForm);
   }
 
   function resetFormElements(formElements) {
@@ -174,9 +186,9 @@
     window.pinMain.setPinMainAddress(false);
   }
 
-  form.title.setAttribute('minlength', 30);
-  form.title.setAttribute('maxlength', 100);
-  form.price.setAttribute('max', 1000000);
+  form.title.setAttribute('minlength', TITLE_MIN_LENGTH);
+  form.title.setAttribute('maxlength', TITLE_MAX_LENGTH);
+  form.price.setAttribute('max', PRICE_MAX);
   form.title.required = true;
   form.price.required = true;
   form.address.readOnly = true;

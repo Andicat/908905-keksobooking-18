@@ -4,6 +4,8 @@
   var PIN_MAIN_WIDTH = 65;
   var PIN_MAIN_HEIGHT = 65;
   var PIN_MAIN_ACTIVE_HEIGHT = 87;
+  var PIN_MIN_Y = 130;
+  var PIN_MAX_Y = 630;
 
   var mapPinMain = document.querySelector('.map__pin--main');
   var mapPins = document.querySelector('.map__pins');
@@ -11,9 +13,9 @@
   var mapPinMainY = mapPinMain.getAttribute('offsetTop');
 
   var limits = {
-    top: mapPins.offsetTop + PIN_MAIN_ACTIVE_HEIGHT,
+    top: PIN_MIN_Y - PIN_MAIN_ACTIVE_HEIGHT,
     right: mapPins.offsetLeft + mapPins.offsetWidth,
-    bottom: mapPins.offsetTop + mapPins.offsetHeight,
+    bottom: PIN_MAX_Y,
     left: mapPins.offsetLeft
   };
 
@@ -46,9 +48,9 @@
 
     var dragged = false;
 
-    function onClickPreventDefault(clEvt) {
+    function onClickMapPinMain(clEvt) {
       clEvt.preventDefault();
-      mapPinMain.removeEventListener('click', onClickPreventDefault);
+      mapPinMain.removeEventListener('click', onClickMapPinMain);
     }
 
     function onMouseMove(moveEvt) {
@@ -65,7 +67,7 @@
         y: moveEvt.clientY
       };
 
-      mapPinMain.style.top = Math.min(Math.max((mapPinMain.offsetTop - shift.y), limits.top), limits.bottom - PIN_MAIN_HEIGHT) + 'px';
+      mapPinMain.style.top = Math.min(Math.max((mapPinMain.offsetTop - shift.y), limits.top), limits.bottom - PIN_MAIN_ACTIVE_HEIGHT) + 'px';
       mapPinMain.style.left = Math.min(Math.max((mapPinMain.offsetLeft - shift.x), limits.left), limits.right - PIN_MAIN_WIDTH) + 'px';
 
       setPinMainAddress(true);
@@ -78,8 +80,8 @@
       document.removeEventListener('mouseup', onMouseUp);
 
       if (dragged) {
-        onClickPreventDefault(evt);
-        mapPinMain.addEventListener('click', onClickPreventDefault);
+        onClickMapPinMain(evt);
+        mapPinMain.addEventListener('click', onClickMapPinMain);
       }
     }
 
