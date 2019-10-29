@@ -32,6 +32,11 @@
     });
   }
 
+  // обработчик закрытия карточки по клику
+  function onPopupClose() {
+    closeCard();
+  }
+
   // создаем карточку предложения и вставляем ее на карту
   function showCard(offer) {
     if (window.main.map.querySelector('.map__card')) {
@@ -53,7 +58,7 @@
 
     window.main.map.insertBefore(popup, window.main.mapFilter);
 
-    popup.querySelector('.popup__close').addEventListener('click', closeCard);
+    popup.querySelector('.popup__close').addEventListener('click', onPopupClose);
   }
 
   // удаляем карточку предложения с карты
@@ -61,7 +66,7 @@
     window.pins.disactivatePins();
     if (popup) {
       popup.remove();
-      popup.querySelector('.popup__close').removeEventListener('click', closeCard);
+      popup.querySelector('.popup__close').removeEventListener('click', onPopupClose);
     }
   }
 
