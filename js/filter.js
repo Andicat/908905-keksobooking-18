@@ -24,11 +24,11 @@
   function isEqual(par, filter) {
     switch (filter.name) {
       case 'price':
-        return (par[filter.name] >= PriceRangeMap[filter.value].min && par[filter.name] < PriceRangeMap[filter.value].max) ? true : false;
+        return (par[filter.name] >= PriceRangeMap[filter.value].min && par[filter.name] < PriceRangeMap[filter.value].max);
       case 'feature':
         return (par.features.indexOf(filter.value) >= 0);
       default:
-        return (par[filter.name].toString() === filter.value) ? true : false;
+        return (par[filter.name].toString() === filter.value);
     }
   }
 
